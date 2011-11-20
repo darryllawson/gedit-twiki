@@ -19,7 +19,8 @@ you should escape one (using a ! prefix), in case you don't want auto-linking.
 
 ### Installation
 
-Simply copy twiki.lang into the language-specs directory:
+Download the latest tag (.zip or .tar.gz) from https://github.com/darryllawson/gedit-twiki/tags, extract the contents, and
+copy the twiki.lang file into the language-specs directory:
 
 * *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
 * *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
