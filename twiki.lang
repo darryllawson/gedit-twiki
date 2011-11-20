@@ -1,0 +1,416 @@
+<?xml version="1.0"?>
+<!--
+ 
+ GtkSourceView TWiki Language Definition
+ Copyright (C) 2011 Darryl Lawson <darryl.lawson@gmail.com>
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
+-->
+
+<language id="twiki" _name="TWiki" version="2.0" _section="Markup">
+
+    <!--
+    
+     This language definition reflects:
+     http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules
+     
+    -->
+    
+    <metadata>
+        <property name="mimetypes">text/twiki</property>
+        <property name="globs">*.twiki</property>
+        <property name="block-comment-start">&lt;!--</property>
+        <property name="block-comment-end">--&gt;</property>
+    </metadata>
+
+    <styles>
+        <style id="anchor" _name="Anchor" map-to="def:identifier"/>
+        <style id="formatted-text" _name="Formatted text" map-to="def:constant"/>
+        <style id="heading" _name="Heading" map-to="def:type"/>
+        <style id="link" _name="link" map-to="def:underlined"/>
+        <style id="markup" _name="TWiki markup" map-to="def:statement"/>
+        <style id="separator" _name="Separator (horzontal rule)" map-to="def:statement"/>
+        <style id="verbatim" _name="Verbatim text" map-to="def:constant"/>
+        <style id="variable" _name="Variable" map-to="def:identifier"/>   
+        <style id="tag" _name="Tag" map-to="html:tag"/>
+    </styles>
+
+    
+    <definitions>
+
+        <!-- Headings 
+        
+         Three or more dashes at the beginning of a line, followed by plus
+         signs and the heading text.
+        -->
+        <context id="heading" style-ref="heading">
+            <start>^---+\++</start>
+            <end>$</end>
+            <include>
+                <context ref="embedded"/>
+            </include>
+        </context>
+
+        <!-- Formatted text
+
+         - Use look ahead assertion to make sure the match doesn't span more than a single line.
+         - Back references are not supported, so we can't write a single context to match all
+           styles.     
+         - Don't need context for bold italics or fixed as they are matched by the
+           non-bold versions anyway.
+         - Formatted text can be followed by normal punctuation: [,.?!:;)]
+         -->
+         
+        <context id="inside-formatted-text">
+			<include>
+				<context ref="links"/>
+				<context ref="variable"/>
+			</include>
+		</context>
+                
+        <context id="formatted-text">
+            <include>                
+			    <!-- Assert there is a valid char behind the opening indicator. -->
+				<define-regex id="ft-behind">(?&lt;=^|[\s\!\(])</define-regex>				
+				<!-- Assert there is a valid char ahead of the closing indicator. -->
+				<define-regex id="ft-ahead">(?=$|[\s\,\.\?\!\:\;\)])</define-regex>
+
+                <define-regex id="ft-body">(\S|\S.*\S)</define-regex>
+                <define-regex id="ft-body-behind">(?&lt;=\S)</define-regex>
+                
+                <context id="bold" style-ref="formatted-text" extend-parent="false">
+                    <start>\%{ft-behind}\*(?=\%{ft-body}\*\%{ft-ahead})</start>
+                    <end>\%{ft-body-behind}\*\%{ft-ahead}</end>
+                    <include>
+                        <context ref="inside-formatted-text"/>
+                    </include>
+                </context>
+
+                <context id="italic" style-ref="formatted-text" extend-parent="false">
+                    <start>\%{ft-behind}\_(?=\%{ft-body}\_\%{ft-ahead})</start>
+                    <end>\%{ft-body-behind}\_\%{ft-ahead}</end>
+                    <include>
+                        <context ref="inside-formatted-text"/>
+                    </include>
+                </context>
+
+                <context id="fixed" style-ref="formatted-text" extend-parent="false">
+                    <start>\%{ft-behind}\=(?=\%{ft-body}\=\%{ft-ahead})</start>
+                    <end>\%{ft-body-behind}\=\%{ft-ahead}</end>
+                    <include>
+                        <context ref="inside-formatted-text"/>
+                    </include>
+                </context>
+            </include>
+        </context>
+
+        <!-- <verbatim>
+        
+         Can not contain TWiki markup or HTML.
+        
+         Limitation: The <verbatim> and </verbatim> tags cannot be split across
+         multiple lines.
+        -->
+        <context id="verbatim">
+            <start>&lt;(verbatim)\s*&gt;</start>
+            <end>&lt;/\%{1@start}\s*&gt;</end>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="tag"/>
+                <context sub-pattern="0" where="end" style-ref="tag"/>
+                <context id="verbatim-body" style-ref="verbatim" extend-parent="false">
+                    <match>.*</match>
+                </context>
+            </include>
+        </context>
+                
+        <!-- <pre>
+        
+         Similar to <verbatim>, except variable dereference and HTML is
+         allowed. No style is applied, as that would over-ride the HTML
+         tag and variable styles for the contents.
+        
+         Limitation: same as for <verbatim> above.
+        -->
+        <context id="pre">
+            <start>&lt;pre\s*&gt;</start>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="tag"/>
+                <context ref="variable"/>
+                <!-- end-parent="true" is used rather than <end>, to stop the
+                 html:html context matching </pre>.
+                 -->
+                <context end-parent="true" style-ref="tag">
+                    <match>&lt;/pre\s*&gt;</match>
+                </context>
+                <context ref="html:html"/>
+            </include>
+        </context>
+        
+        <!-- <literal>
+         
+         Same as <pre>, but is rendered a differenty (<pre> is rendered as
+         monospace and preserves newlines.
+         
+         Limitation: same as for <verbatim> above.        
+         -->
+        <context id="literal">
+            <start>&lt;literal\s*&gt;</start>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="tag"/>
+                <context ref="variable"/>
+                <context end-parent="true" style-ref="tag">
+                    <match>&lt;/literal\s*&gt;</match>
+                </context>
+                <context ref="html:html"/>
+            </include>
+        </context>
+        
+        <!-- XML elements which have special meaning in TWiki. They are not HTML. -->
+        <context id="xml-elements">
+            <include>
+                <context ref="verbatim"/>
+                <context ref="pre"/>
+                <context ref="literal"/>
+            </include>
+        </context>
+        
+        <!-- Separator (horizontal rule)
+
+         Non-dash characters (including white space) are not permitted after the 3 dashes.
+        -->
+        <context id="separator" style-ref="separator">
+            <match>^---+$</match>
+        </context>
+
+        <!-- List (bulleted or numbered)
+
+        A list indicator can only occur at the start of a line. It is a multiple of 3 space
+        characters followed by either:	
+          * An asterisk followed by a space.
+          * Any number of digits, optionally followed by a period.
+          * A single 'A' (upper case letters), 'a' (lower case letters),
+            'I" (upper case roman numerals) or 'i" (lower case roman numerals)
+            followed by a period.
+        -->        
+        <context id="list">
+            <match>^(?:   )+(\* |\d+(?:\.)?|[AaIi]\.)</match>
+            <include>
+            	<context sub-pattern="1" style-ref="markup"/>
+            </include>
+        </context>
+
+        <!-- Definition List
+
+         Must occur at the start of a line, multiple of 3 space characters followed by a $, then
+         an arbitray amount of text (which may be formatted), then a ':', and then
+         atleast one space.
+        -->
+        <context id="definition-list" end-at-line-end="true">
+            <start>^(?:   )+(\$)(?=.*:.+)</start>
+            <end>:</end>
+            <include>
+                <context sub-pattern="1" where="start" style-ref="markup"/>
+                <context sub-pattern="0" where="end" style-ref="markup"/>
+                <context ref="embedded"/>
+            </include>
+        </context>
+
+        <!-- Table Row
+         
+         Highlight a table row if the line starts with a pipe (|) and finishes
+         with a pipe or a backslash (line continuation).
+         
+         Whitespace before and after the pipe character is ignored.
+         -->
+        <context id="table-row">
+            <start>^\s*(\|)(?=.*(\|\s*|\\)$)</start> 
+            <end>(\|)\s*$</end>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="markup"/>
+                <context sub-pattern="0" where="end" style-ref="markup"/>
+                <context ref="embedded"/>
+                <!-- Highlight pipe. Make sure <end> not matched here. -->
+                <context style-ref="markup">
+                    <match>\|(?!\s*$)</match>
+                </context>
+                <!-- Highlight backslash (only when last char on line). -->
+                <context style-ref="markup">
+                    <match>\\$</match>
+                </context>
+                <!-- Terminate the table row context on error conditions: 
+                 row is terminated without a | or \, or a blank line. -->
+                <context end-parent="true">
+                    <match>[^\|]\s+$|[^\|\\]$|^$</match>
+                </context>
+            </include>
+        </context>
+    
+        <!-- Variable Reference
+                 
+         - White space between % and the variable name is not permitted.
+         - A ! prefix can be used to escape the variable.
+         -->
+        <context id="variable">
+            <include>         
+                <!-- Variable without parameters. Single line. -->
+                <context style-ref="variable">
+                    <match>(?&lt;!!)%\w+%</match>
+                </context>    
+                <!-- Variable WITH parameters. Multi line. -->
+                <context style-ref="variable">
+                    <start>(?&lt;!!)%\w+{</start>
+                    <end>}%</end>
+                    <include>
+                        <context style-ref="xml:attribute-name">
+                            <match>\b\w+\s*=</match>
+                        </context>
+                        <context style-ref="xml:attribute-value">
+                            <match>"[^"]+"</match>
+                        </context>
+                    </include>
+                </context>
+            </include>
+        </context>
+
+        <!-- Variable Definition
+         
+         The format is:
+         [multiple of 3 sp] * [sp] Set [sp] VARIABLENAME [sp] = [sp] value
+         -->      
+        <context id="variable-definition" end-at-line-end="true">
+            <start>^(?:   )+(\* Set) (\w+) (=)</start>
+            <include>
+                <context sub-pattern="1" where="start" style-ref="markup"/>
+                <context sub-pattern="2" where="start" style-ref="xml:attribute-name"/>
+                <context sub-pattern="3" where="start" style-ref="markup"/>
+                <context ref="embedded"/>
+            </include>
+        </context>
+        
+        <!-- Wiki word link
+        
+         - A WikiWord is two or more words with initial capitals, run together.
+           See http://twiki.org/cgi-bin/view/TWiki05x00/WikiWord for the
+           grammar.
+         - A Wiki web name must start with a capital, and followed but nothing
+           or alphanumeric text.
+         - A <nop> and ! prefix is used to escape a Wiki word. (A bit of trickiness is required
+           to get this to work for a link with a web name prefix.)
+        
+         Weirdness/limitation: A wiki word will be escaped if preceeded by a
+         punctuation character, unless that character is part of the markup.
+         This is too hard to detect, and non-common, so we don't detect this.
+        -->  
+        
+        <define-regex id="not-escaped">(?&lt;!!|&lt;nop&gt;)</define-regex>
+        
+        <define-regex id="wiki-webname">\b[A-Z]\w*\b</define-regex>
+        
+        <define-regex id="wiki-word">\b([A-Z][a-z0-9]+){2,}[A-Za-z0-9]*\b</define-regex>
+        
+        <context id="wiki-link" style-ref="link">
+            <match>\%{not-escaped}(?:(\%{wiki-webname}\.)+|(?&lt;!\.))\%{wiki-word}</match>
+        </context>
+
+        <!-- Forced link: [[ link ]], and specific link: [[ link ][ text ]].
+        
+         ! prefix is used to escape (<nop> does not work here though).        
+        -->
+        
+        <define-regex id="not-escaped-link">(?&lt;!!)</define-regex>
+        
+        <define-regex id="not-bracket">[^\]\[]*</define-regex>
+        
+        <context id="forced-link" style-inside="true" style-ref="link" extend-parent="false">
+            <start>\%{not-escaped-link}\[\[(?=\%{not-bracket}\]\])</start>
+            <end>\]\]</end>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="markup"/>
+                <context sub-pattern="0" where="end" style-ref="markup"/>
+                <context ref="formatted-text"/>
+                <context ref="variable"/>
+            </include>
+        </context>
+
+        <context id="specific-link" extend-parent="false">
+            <start>\%{not-escaped-link}\[\[(?=\%{not-bracket}\]\[\%{not-bracket}\]\])</start>
+            <end>\]\]</end>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="markup"/>
+                <context sub-pattern="0" where="end" style-ref="markup"/>
+                <context ref="formatted-text"/>
+                <context ref="variable"/>
+                <context id="link-part" once-only="true" extend-parent="false"
+                         style-inside="true" style-ref="link">
+                    <start></start>
+                    <end>\]\[</end>
+                    <include>
+                        <context sub-pattern="0" where="end" style-ref="markup"/>
+                    </include>
+                </context>
+            </include>
+        </context>
+
+        <!-- Anchor
+
+        Hash prefixed WikiWord at the start of a line.
+        -->
+        <context id="anchor" style-ref="anchor">
+            <match>^#\%{wiki-word}</match>
+        </context>
+        
+        <!-- Contexts that can appear within another context, such as a table row or heading. --> 
+        <context id="embedded">
+        	<include>
+                <context ref="formatted-text"/>
+                <context ref="variable"/>
+                <context ref="links"/>
+        	</include>
+        </context>
+        
+        <!-- All types of links --> 
+        <context id="links">
+        	<include>
+        		<context ref="wiki-link"/>
+        		<context ref="forced-link"/>
+        		<context ref="specific-link"/>
+        		<context ref="def:email-address"/>
+        		<context ref="def:net-address"/>
+        	</include>
+        </context>
+        
+        <!-- Top-level TWiki context -->
+        <context id="twiki">
+            <include>
+                <!-- xml-elements must appear before html:html so that it takes precedence. -->
+                <context ref="xml-elements"/>
+                <context ref="variable"/>
+                <context ref="variable-definition"/>
+                <context ref="heading"/>
+                <context ref="formatted-text"/>
+                <context ref="anchor"/>
+                <context ref="separator"/>
+                <context ref="list"/>
+                <context ref="definition-list"/>
+                <context ref="table-row"/>
+                <context ref="links"/>
+                <context ref="html:html"/>
+            </include>
+        </context>
+
+    </definitions>
+</language>

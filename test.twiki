@@ -1,0 +1,388 @@
+---+ TWiki Gedit Syntax Highlighter Test Page
+
+%TOC%
+
+---++ Introduction
+
+This is a a test page for the Gedit Syntax highlighter. This page is based on http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules.
+
+---++ Headings
+
+---+ Heading 1
+---+!! Heading 1
+---+++ Heading 3
+---+++ Heading can have %VARIABLES%
+---+++ Heading can have [[Links]]
+-------+ Can have more than three dashes.
+ ---+++ Won't work, the line must start with a -.
+
+
+---++ Formatted Text
+
+Use bold to test the basic formatted text matching:
+
+   * *YES WikiWord in format text* NO*
+   * *YES whole thing with two trailing stars**
+   * *YES whole thing=*
+   * *YES whole thing***
+   * **YES whole thing*
+   * *YES * and YES too*
+   * *YES!*
+   * *YES,*
+   * *!YES*
+   * *YES_*
+   * *YES)*
+   * *YES(*
+   * *(YES*
+   * *YES**
+
+Verify the sub-set of characters that can appear before the starting indicator:
+   * !*YES*
+   * (*YES*
+   * (space) *YES*
+   * (tab)	*YES*
+
+Verify the sub-set of characters can appear after ending indicator:
+   * *YES*,
+   * *YES*.
+   * *YES*?
+   * *YES*!
+   * *YES*)
+   * *YES* (space)
+   * *YES*	 (tab)
+
+Verify the sub-set of characters that CANNOT appear before starting indicator:
+   * .*NO*
+   * ,*NO*
+   * ?*NO*
+   * )*NO*
+
+Verify the sub-set of characters that CANNOT appear after ending indicator:
+   * *NO*~
+   * *NO*`
+   * *NO*@
+   * *NO*#
+   * *NO*$
+   * *NO*%
+   * *NO*^
+   * *NO*&
+   * *NO*(
+   * *NO*-
+   * *NO*_
+   * *NO*+
+   * *NO*|
+   * *NO*"
+
+Verify that space chars after starting indicator or before ending indicator 
+prevent the match:
+   * *NO *
+   * *NO * (with a tab)
+   * * NO*
+   * * NO* (with a tab)
+   * *NO*=
+   * *NO*a
+
+Words with spaces and other chars:
+   * *YES This has spaces*
+   * *YES This has , . () punctuation*
+
+Italics
+   * Single _italic_ word
+   * Words _with spaces ,. ()_
+
+Bold Italic
+   * Single __italic__ word
+   * Words __with spaces and ,. () __
+
+Fixed
+   * Single =fixed= word
+   * Words =with spaces and ,. () _=
+   
+Bold Fixed
+   * Single ==fixed== word
+   * Words ==with spaces and ,. () _==
+
+Weirdness
+   * __YES alpha_, but __ NO_
+
+
+---++ Verbatim, Pre and Literal Text
+
+   * Set VAR = VAR_VALUE
+
+<verbatim>
+This is verbatim
+  <b>abc</b> (HTML tags ignored)
+  %VAR% (variables not expanded)
+  SomeLink [[SomeLink][foo]] (links are ignored)
+</verbatim>
+
+<pre>
+This is pre
+  <b>abc</b> (HTML tags NOT ignored)
+  %VAR% (variables are expanded)
+  SomeLink [[SomeLink][foo]] (links are ignored)
+</pre>
+
+<literal>
+This is like pre, it would just be rendered differently, but no difference
+here.
+  <b>abc</b> (HTML tags NOT ignored)
+  %VAR% (variables are expanded)
+  SomeLink [[SomeLink][foo]] (links are ignored)
+</literal>
+
+---++ Separator (Horizontal Rule)
+
+These are all valid:
+
+---
+----
+----------------------
+
+These are not:
+
+ ---
+--
+-
+--- asasas
+---    
+
+
+---++ Lists
+
+Bulleted list:
+   * alpha
+      * beta
+         * charlie
+   * alpha
+
+Can have formatting, variables and links:
+   * *Hello* and =bye=
+   * See %SOME% variables.
+   * See some WikiWords, and [[forced link]] [[alpha][beta]]
+
+Numbered lists:
+   1. Numbered list.
+      1. Numbered list.
+         a. asas
+
+Can have formatting, variables and links:
+   1. *Hello* and =bye=
+   1. See %SOME% variables.
+   1. See some WikiWords, and [[forced link]] [[alpha][beta]]
+
+Can have a trailing dot:
+   1. a
+   1. b
+   1.... subsequent dots are considered text
+or not:
+   1 a
+   1 b
+don't have to use 1, any integer:
+   2 a
+   321 b
+   192012. c
+
+Can use lowercase a char, must have . here:
+   a. a
+   a. b
+Can use uppercase A char, must have . here:
+   A. a
+   A. b
+Non a characters do NOT work:
+   a. a
+   b. b
+   A. a
+   B. b
+  
+Can use roman numerals (on a single i.):
+   i. a
+   i. b
+   i. c
+
+or uppercase:
+   I. a
+   I. b
+   I. c
+
+
+---++ Definition Lists
+
+These are all valid:
+
+   $ *term1* : def1
+   $ term2: def2
+      $ term21: def21
+         $ term211: def211
+         $ term212: def212
+      $ term22: def22
+
+Can have variables:
+
+   * Set LIKE_THIS = Replaced LIKE_THIS
+   $ %LIKE_THIS% : def1
+   $ Or : %LIKE_THIS% too
+
+Or links:
+
+   $ [[LikeThis][too]] : def1
+   $ alpha : [[LikeThis][too]]
+
+Any level of indent can be used immediately:
+
+         $ term1: def1
+
+
+---++ Table
+
+| *title1* | *title2* | *title3* |
+| A | B | ^ |
+
+The line must start with a | to | be a table so this is not a table |.
+
+But leading and trailing white space is fine:
+
+  | see | this | is | fine |   
+
+A single | on a line does not make a table either.
+
+A backslash can be used to split a table row over two lines. This is a valid table:
+
+| A | B | C \
+| D | \
+E |
+|^| b | c | d | e |
+
+
+---++ Wiki Words
+
+WikiWords should be highlighted as links (usually underlined and italics).
+
+They can be styled too: *WikiWord*, =WikiWord=.
+
+They can have a web prefix: Web.WikiWord, WebName.WikiWord, AnotherOne.WebName.WikiWord
+
+Web name prefixes must begin with a capital. This isn't a valid link: nogood.WikiPage.
+
+Escape a wiki word with a ! or <nop>: !WikiWord, <nop>WikiWord, !WebName.WikiWord, <nop>WebName.WikiWord.
+
+<noautolink>Not that we don't do anything for NoAutoLink, except the XML element highlighting.</noautolink>
+
+
+---+++ Anchors
+
+And an anchor is a wiki word preceeded by # and appearing at the start of a line, like this:
+
+#WikiWord
+
+ #NotAtStartOfLine
+
+#notAWikiWord
+
+#nor this
+
+
+---+++ Forced Links
+
+Forced links look like this: [[A link to somwehere]] or this [[wiki#syntax]] or even this [[Main.TWiki groups]].
+
+Can be escaped: ![[wiki syntax]] (note that <nop> can't be used here: <nop>[[wiki syntax]])
+
+
+---+++ Specific Links
+
+[[GoHere][this is an *internal* link]]
+
+[[#Anchor][blah *can have formatting* ]]
+
+[[http://gnu.org][GNU]]
+
+Can be escaped: ![[#Anchor][blah]] (note that <nop> can't be used here: <nop>[[#Anchor][blah]])
+
+
+---+++ External Links
+
+Mail links:
+   * a@b.com
+   * job.bloggs@gmail.com
+   * mailto:job.bloggs@gmail.com
+   * [[mailto:a@b.com][Mail]]
+   * [[mailto:?subject=Hi][Hi]]
+
+Other links:
+   * http://url.com/here
+   * https://url.com/here
+   * ftp://url.com/here
+   * news://url.com/here
+
+
+---++ Variable References
+
+%TOPIC%
+
+%ATTACHURL%/image.gif
+
+%INCLUDE{"SomeTopic"}%
+
+%INCLUDE{"TWiki05x01.SiteMap"}%
+
+%SEARCH{"sushi"}%
+
+%ICON{"warning"}%
+
+Parameterised variables: %EXAMPLE{ "foo" PARAM1="bar" }%
+
+%INCLUDE{"OtherTopic" ARG="arg"}%.
+
+Escape a variable with a ! prefix: !%SOMEVARIABLE%, !%FOO{a="1"}%
+
+White space is not permitted in the variable name: %NOT HIGHLIGHTED%
+
+Simple variables are not valid %ACROSS
+MULTIPLELINES%
+
+However, variables with parameters can span lines: %EXAMPLE{"foo"
+PARAM1="bar"}%
+
+---++ Setting Variables
+
+   * Set BLAH = 1
+
+Definition can have formatted text:
+
+   * Set FOO = *this* and _this_
+
+or reference other variables:
+
+   * Set ALPHA = like this:%BLAH%
+
+or WikiWords:
+
+   * Set BETA = this is a WikiWord and *formatted* text
+
+The format needs to be exact. The following do NOT work:
+
+  * Set BLAH = 2
+   * set BLAH = 3
+   * Set BLAH  = 4
+   * Set  BLAH = 5
+
+---++ HTML
+
+<br>
+
+<a href="assaasas">
+
+<pre>
+pre is treated like verbatim.
+</pre>
+
+---++ Comments
+
+<!--
+Comments are HTML/XML style, and therefore are handled by the
+html language spec.
+-->
+
+
