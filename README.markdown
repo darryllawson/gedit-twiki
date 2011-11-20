@@ -2,8 +2,8 @@ This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language def
 enables syntax highlighting for [TWiki](http://twiki.org/) markup in [gedit](http://projects.gnome.org/gedit/),
 the official GNOME text editor.
 
-Why is TWiki syntax highlighting useful?
-----------------------------------------
+
+### Why is TWiki syntax highlighting useful?
 
 TWiki has you editing pages in a HTML textarea, which is a pain; wouldn't you rather use a proper
 text editor like gedit? The [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
@@ -16,19 +16,19 @@ Once you are editing TWiki pages with gedit, the next thing you'll want is synta
 * Highlight wiki words; useful in making sure you have typed a valid one, and to inform you when
 you should escape one (using a ! prefix), in case you don't want auto-linking.
 
-Installation
-------------
 
-Simply copy `twiki.lang` into the `language-specs` directory:
+### Installation
 
-* *Linux:* `~/.local/share/gtksourceview-2.0/language-specs/`
-* *Mac OS X:* `/Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/`
-* *Windows:* `C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\`
+Simply copy twiki.lang into the language-specs directory:
 
-Close all gedit windows and then restart gedit.
+* *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
+* *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
+* *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
 
-Development
------------
+Then close all gedit windows and restart.
+
+
+### Development
 
 This project is hosted at [https://github.com/darryllawson/gedit-twiki/](https://github.com/darryllawson/gedit-twiki/]).
 
@@ -36,12 +36,12 @@ Grab a git clone like this:
 
     $ git clone git://github.com/darryllawson/gedit-twiki.git
 
-See https://github.com/darryllawson/gedit-twiki/wiki for more development information.
+See https://github.com/darryllawson/gedit-twiki/wiki for more information.
 
-License
--------
 
-Copyright (C) 2011 Darryl Lawson (darryl.lawson@me.com)
+### License
+
+Copyright (C) 2011 Darryl Lawson &lt;darryl.lawson@me.com&gt;
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public
