@@ -22,9 +22,9 @@ you'll want is syntax highlighting, for these benefits:
 
 ### Installation
 
-Download the latest tag (.zip or .tar.gz) from
-https://github.com/darryllawson/gedit-twiki/tags/, extract the contents, and
-copy twiki.lang into the language-specs directory, whose location varies:
+Download the latest version from
+https://github.com/darryllawson/gedit-twiki/downloads/, extract the contents,
+and copy twiki.lang into the language-specs directory, whose location varies:
 
 * *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
 * *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
