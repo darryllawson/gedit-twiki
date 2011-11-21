@@ -1,43 +1,48 @@
-This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language definition that
-enables syntax highlighting for [TWiki](http://twiki.org/) markup in [gedit](http://projects.gnome.org/gedit/),
-the official GNOME text editor.
+This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language
+definition that enables syntax highlighting for [TWiki](http://twiki.org/)
+markup in [gedit](http://projects.gnome.org/gedit/), the official GNOME text
+editor.
 
 
 ### Why is TWiki syntax highlighting useful?
 
-TWiki has you editing pages in a HTML textarea, which is a pain; wouldn't you rather use a proper
-text editor like gedit? The [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
-Firefox plugin (or similar) makes it easy to edit HTML textareas in your favourite editor.
-Once you are editing TWiki pages with gedit, the next thing you'll want is syntax highlighting, for these benefits:
+TWiki has you editing pages in a HTML textarea, which is a pain; wouldn't you
+rather use a proper text editor like gedit? The
+[It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
+Firefox plugin (or similar) makes it easy to edit HTML textareas in your
+favourite editor. Once you are editing TWiki pages with gedit, the next thin
+you'll want is syntax highlighting, for these benefits:
 
 * Highlight headings, making it easy to navigate the document.
-* Highlight keywords and markup elements, making it easy to visualise formatting and detect syntax erros.
-  For example, you'll know when you accidentally typed four spaces instead of the requisite three.
-* Highlight wiki words; useful in making sure you have typed a valid one, and to inform you when
-you should escape one (using a ! prefix), in case you don't want auto-linking.
-
+* Highlight keywords and markup elements, making it easy to visualise
+  formatting and detect syntax errors. For example, you'll know when you
+  accidentally typed four spaces instead of the requisite three.
+* Highlight wiki words; useful in making sure you have typed a valid one, and
+  to inform you when you should escape one (using a ! prefix).
 
 ### Installation
 
-Download the latest tag (.zip or .tar.gz) from https://github.com/darryllawson/gedit-twiki/tags, extract the contents, and
-copy the twiki.lang file into the language-specs directory:
+Download the latest tag (.zip or .tar.gz) from
+https://github.com/darryllawson/gedit-twiki/tags/, extract the contents, and
+copy twiki.lang into the language-specs directory, whose location varies:
 
 * *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
 * *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
 * *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
 
-Then close all gedit windows and restart.
-
+Then close all gedit windows and restart. You can now choose TWiki
+highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
 
 ### Development
 
-This project is hosted at [https://github.com/darryllawson/gedit-twiki/](https://github.com/darryllawson/gedit-twiki/]).
+This project is hosted at
+[https://github.com/darryllawson/gedit-twiki/](https://github.com/darryllawson/gedit-twiki/]).
 
 Grab a git clone like this:
 
     $ git clone git://github.com/darryllawson/gedit-twiki.git
 
-See https://github.com/darryllawson/gedit-twiki/wiki for more information.
+See https://github.com/darryllawson/gedit-twiki/wiki/ for more information.
 
 
 ### License
