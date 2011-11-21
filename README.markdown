@@ -3,6 +3,19 @@ definition that enables syntax highlighting for [TWiki](http://twiki.org/)
 markup in [gedit](http://projects.gnome.org/gedit/), the official GNOME text
 editor.
 
+### Installation
+
+Download the latest version from
+https://github.com/darryllawson/gedit-twiki/downloads/, extract the contents,
+and copy twiki.lang into the language-specs directory:
+
+* *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
+* *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
+* *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+
+Then close all gedit windows and restart. Select TWiki
+highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
+
 
 ### Why is TWiki syntax highlighting useful?
 
@@ -10,7 +23,7 @@ TWiki has you editing pages in a HTML textarea, which is a pain; wouldn't you
 rather use a proper text editor like gedit? The
 [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
 Firefox plugin (or similar) makes it easy to edit HTML textareas in your
-favourite editor. Once you are editing TWiki pages with gedit, the next thin
+favourite editor. Once you are editing TWiki pages with gedit, the next thing
 you'll want is syntax highlighting, for these benefits:
 
 * Highlight headings, making it easy to navigate the document.
@@ -20,29 +33,13 @@ you'll want is syntax highlighting, for these benefits:
 * Highlight wiki words; useful in making sure you have typed a valid one, and
   to inform you when you should escape one (using a ! prefix).
 
-### Installation
-
-Download the latest version from
-https://github.com/darryllawson/gedit-twiki/downloads/, extract the contents,
-and copy twiki.lang into the language-specs directory, whose location varies:
-
-* *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
-* *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
-* *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
-
-Then close all gedit windows and restart. You can now choose TWiki
-highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
 
 ### Development
 
-This project is hosted at
-[https://github.com/darryllawson/gedit-twiki/](https://github.com/darryllawson/gedit-twiki/]).
-
-Grab a git clone like this:
-
-    $ git clone git://github.com/darryllawson/gedit-twiki.git
-
-See https://github.com/darryllawson/gedit-twiki/wiki/ for more information.
+This project is hosted at https://github.com/darryllawson/gedit-twiki/.
+Report issues at https://github.com/darryllawson/gedit-twiki/issues/
+and see https://github.com/darryllawson/gedit-twiki/wiki/ for more
+development information.
 
 
 ### License
