@@ -5,13 +5,18 @@ editor.
 
 ### Installation
 
-Download the latest version from
-https://github.com/darryllawson/gedit-twiki/downloads/, extract the contents,
+Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3).
+
+Download the latest version of gedit-twiki from
+https://github.com/darryllawson/gedit-twiki/downloads/, extract the zip contents,
 and copy twiki.lang into the language-specs directory:
 
-* *Linux:* ~/.local/share/gtksourceview-2.0/language-specs/
-* *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
-* *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+* *Linux (gedit 2.x):* `~/.local/share/gtksourceview-2.0/language-specs/`
+  (create with "mkdir -p ..." if does not exist)
+* *Linux (gedit 3.x):* `~/.local/share/gtksourceview-3.0/language-specs/`
+  (create with "mkdir -p ..." if does not exist)
+* *Mac OS X:* `/Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/`
+* *Windows:* `C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\`
 
 Then close all gedit windows and restart. Select TWiki
 highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
