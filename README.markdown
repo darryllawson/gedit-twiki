@@ -1,35 +1,16 @@
+# gedit-twiki
+
 This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language
 definition that enables syntax highlighting for [TWiki](http://twiki.org/)
 markup in [gedit](http://projects.gnome.org/gedit/), the official GNOME text
 editor.
 
-### Installation
-
-Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3).
-
-Download the latest version of gedit-twiki from
-https://github.com/darryllawson/gedit-twiki/downloads/, extract the zip contents,
-and copy twiki.lang into the language-specs directory:
-
-* *Linux (gedit 2.x):* `~/.local/share/gtksourceview-2.0/language-specs/`
-  (create with "mkdir -p ..." if does not exist)
-* *Linux (gedit 3.x):* `~/.local/share/gtksourceview-3.0/language-specs/`
-  (create with "mkdir -p ..." if does not exist)
-* *Mac OS X:* `/Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/`
-* *Windows:* `C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\`
-
-Then close all gedit windows and restart. Select TWiki
-highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
-
 
 ### Why is TWiki syntax highlighting useful?
 
-TWiki has you editing pages in a HTML textarea, which is a pain; wouldn't you
-rather use a proper text editor like gedit? The
-[It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
-Firefox plugin (or similar) makes it easy to edit HTML textareas in your
-favourite editor. Once you are editing TWiki pages with gedit, the next thing
-you'll want is syntax highlighting, for these benefits:
+TWiki has you editing pages in a HTML textarea or an unappealing web based WYSIWYG editor; wouldn't you
+rather use a proper text editor like gedit? Once you are editing TWiki pages with gedit, the next thing
+you'll want is syntax highlighting, for benefits such as:
 
 * Highlight headings, making it easy to navigate the document.
 * Highlight keywords and markup elements, making it easy to visualise
@@ -38,6 +19,48 @@ you'll want is syntax highlighting, for these benefits:
 * Highlight wiki words; useful in making sure you have typed a valid one, and
   to inform you when you should escape one (using a ! prefix).
 
+The [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
+Firefox Add-on (or similar) makes it easy to edit HTML textareas in your
+favourite editor. See below for more information.
+
+
+### Installation
+
+Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3).
+
+Download the latest version of gedit-twiki from
+https://github.com/darryllawson/gedit-twiki/downloads/, extract the zip
+and copy twiki.lang into the language-specs directory:
+
+* *Linux (gedit 2.x):* ~/.local/share/gtksourceview-2.0/language-specs/ <br>
+(Create with "mkdir -p ..." if does not exist.)
+* *Linux (gedit 3.x):* ~/.local/share/gtksourceview-3.0/language-specs/ <br>
+(Create with "mkdir -p ..." if does not exist.)
+* *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
+* *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+
+Then close all gedit windows and restart. Select TWiki
+highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
+
+
+### Configuring the It's All Text! Firefox Plugin
+
+Install the [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
+Firefox Add-on, and configure its preferences from
+*Tools > It's All Text! > Preferences...*:
+
+* *Editor (Linux)*: /usr/bin/gedit
+* *Editor (Mac OS X)*: /Applications/gedit.app
+* *File Extensions*: ﻿.twiki,.txt,.html,.css,.xml,.xsl,.js <br>
+(.twiki appearing first makes it the default.)
+* *Hot Key (Linux)*: ctrl E
+* *Hot Key (Max OS X)*: meta E (meta is the command key)
+
+The *Hot Key* and *File Extensions* settings above are of course just recommendations; they are what I use.
+
+To try it out, edit a random TWiki page at http://twiki.org/cgi-bin/edit/Sandbox/RandomTestTopic937. Logon with the guest account (Username: TWikiGuest, Password: guest). Click the pick shaped icon ("Edit TWiki Markup") on the toolbar,  click the blue Edit button (usually at the bottom right) and hopefully gedit will pop up in TWiki editing mode.
+
+*Tip:* Right click on the blue Edit button for a menu of "Edit as" items and "Edit with new extension...".
 
 ### Development
 
