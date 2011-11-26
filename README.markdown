@@ -8,21 +8,21 @@ editor.
 
 ### Why is TWiki syntax highlighting useful?
 
-TWiki has you editing pages in a HTML textarea or an unappealing web based WYSIWYG editor; wouldn't you
-rather use a proper text editor like gedit? Once you are editing TWiki pages with gedit, the next thing
-you'll want is syntax highlighting, for benefits such as:
+TWiki has you editing pages in a HTML textarea or a web based WYSIWYG editor;
+wouldn't you rather use a proper text editor like gedit? Once you are editing
+TWiki pages with gedit, the next thing you'll want is syntax highlighting, for
+benefits such as:
 
-* Highlight headings, making it easy to navigate the document.
-* Highlight keywords and markup elements, making it easy to visualise
-  formatting and detect syntax errors. For example, you'll know when you
-  accidentally typed four spaces instead of the requisite three.
-* Highlight wiki words; useful in making sure you have typed a valid one, and
-  to inform you when you should escape one (using a ! prefix).
+* Highlight headings, making document navigation easier.
+* Highlight markup, making it easier to visualise formatting and detect syntax
+  errors. For example, you'll know when you accidentally typed four spaces
+  instead of the requisite three.
+* Highlight wiki words; you'll know straight away if you have typed a valid =
+  one, and it'll also be obvious when you need to escape one.
 
 The [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
-Firefox Add-on (or similar) makes it easy to edit HTML textareas in your
-favourite editor. See below for more information.
-
+Firefox Add-on makes it easy to edit HTML textareas in your favourite editor.
+See below for more information.
 
 ### Installation
 
@@ -56,13 +56,20 @@ Firefox Add-on, and configure its preferences from
 * *Hot Key (Linux)*: ctrl E
 * *Hot Key (Max OS X)*: meta E (meta is the command key)
 
-The *Hot Key* and *File Extensions* settings above are of course just recommendations; they are what I use.
+The *Hot Key* and *File Extensions* settings above are of course just
+recommendations.
 
-To try it out, edit a random TWiki page at http://twiki.org/cgi-bin/edit/Sandbox/RandomTestTopic937. Logon with the guest account (Username: TWikiGuest, Password: guest). Click the pick shaped icon ("Edit TWiki Markup") on the toolbar,  click the blue Edit button (usually at the bottom right) and hopefully gedit will pop up in TWiki editing mode.
+To try it out, edit a random TWiki page at
+http://twiki.org/cgi-bin/edit/Sandbox/RandomTestTopic937. Logon with the
+guest account (Username: TWikiGuest, Password: guest). Click the pick shaped
+icon ("Edit TWiki Markup") on the toolbar, click the blue Edit button (usually
+at the bottom right) and gedit should pop up in TWiki editing mode.
 
-*Tip:* Right click on the blue Edit button for a menu of "Edit as" items and "Edit with new extension...".
+*Tip:* Right click on the blue Edit button for a menu of "Edit as" items and
+"Edit with new extension...".
 
-### Development
+
+### Contributing
 
 This project is hosted at https://github.com/darryllawson/gedit-twiki/.
 Report issues at https://github.com/darryllawson/gedit-twiki/issues/

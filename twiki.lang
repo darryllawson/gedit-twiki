@@ -48,7 +48,6 @@
         <style id="tag" _name="Tag" map-to="html:tag"/>
     </styles>
 
-
     <definitions>
 
         <!-- Headings
@@ -66,27 +65,28 @@
 
         <!-- Formatted text
 
-         - Use look ahead assertion to make sure the match doesn't span more than a single line.
-         - Back references are not supported, so we can't write a single context to match all
-           styles.
-         - Don't need context for bold italics or fixed as they are matched by the
-           non-bold versions anyway.
+         - Use look ahead assertion to make sure the match doesn't span more
+           than a single line.
+         - Back references are not supported, so we can't write a single
+           context to match all styles.
+         - Don't need context for bold italics or fixed as they are matched by
+           the non-bold versions anyway.
          - Formatted text can be followed by normal punctuation: [,.?!:;)]
          -->
 
         <context id="inside-formatted-text">
-			<include>
-				<context ref="links"/>
-				<context ref="variable"/>
-			</include>
-		</context>
+            <include>
+                <context ref="links"/>
+                <context ref="variable"/>
+            </include>
+        </context>
 
         <context id="formatted-text">
             <include>
-			    <!-- Assert there is a valid char behind the opening indicator. -->
-				<define-regex id="ft-behind">(?&lt;=^|[\s\!\(])</define-regex>
-				<!-- Assert there is a valid char ahead of the closing indicator. -->
-				<define-regex id="ft-ahead">(?=$|[\s\,\.\?\!\:\;\)])</define-regex>
+                <!-- Assert there is a valid char behind the opening indicator. -->
+                <define-regex id="ft-behind">(?&lt;=^|[\s\!\(])</define-regex>
+                <!-- Assert there is a valid char ahead of the closing indicator. -->
+                <define-regex id="ft-ahead">(?=$|[\s\,\.\?\!\:\;\)])</define-regex>
 
                 <define-regex id="ft-body">(\S|\S.*\S)</define-regex>
                 <define-regex id="ft-body-behind">(?&lt;=\S)</define-regex>
@@ -178,7 +178,7 @@
             </include>
         </context>
 
-        <!-- XML elements which have special meaning in TWiki. They are not HTML. -->
+        <!-- XML elements which have special meaning in TWiki. -->
         <context id="xml-elements">
             <include>
                 <context ref="verbatim"/>
@@ -189,7 +189,8 @@
 
         <!-- Separator (horizontal rule)
 
-         Non-dash characters (including white space) are not permitted after the 3 dashes.
+         Non-dash characters (including white space) are not permitted after
+         the 3 dashes.
         -->
         <context id="separator" style-ref="separator">
             <match>^---+$</match>
@@ -197,26 +198,26 @@
 
         <!-- List (bulleted or numbered)
 
-        A list indicator can only occur at the start of a line. It is a multiple of 3 space
-        characters followed by either:
-          * An asterisk followed by a space.
-          * Any number of digits, optionally followed by a period.
-          * A single 'A' (upper case letters), 'a' (lower case letters),
-            'I" (upper case roman numerals) or 'i" (lower case roman numerals)
-            followed by a period.
+        A list indicator can only occur at the start of a line. It is a
+        multiple of 3 space characters followed by either:
+        - An asterisk followed by a space.
+        - Any number of digits, optionally followed by a period.
+        - A single 'A' (upper case letters), 'a' (lower case letters),
+          'I" (upper case roman numerals) or 'i" (lower case roman numerals)
+          followed by a period.
         -->
         <context id="list">
             <match>^(?:   )+(\* |\d+(?:\.)?|[AaIi]\.)</match>
             <include>
-            	<context sub-pattern="1" style-ref="markup"/>
+                <context sub-pattern="1" style-ref="markup"/>
             </include>
         </context>
 
         <!-- Definition List
 
-         Must occur at the start of a line, multiple of 3 space characters followed by a $, then
-         an arbitray amount of text (which may be formatted), then a ':', and then
-         atleast one space.
+         Must occur at the start of a line, multiple of 3 space characters
+         followed by a $, then an arbitray amount of text (which may be
+         formatted), then a ':', and then atleast one space.
         -->
         <context id="definition-list" end-at-line-end="true">
             <start>^(?:   )+(\$)(?=.*:.+)</start>
@@ -307,8 +308,9 @@
            grammar.
          - A Wiki web name must start with a capital, and followed but nothing
            or alphanumeric text.
-         - A <nop> and ! prefix is used to escape a Wiki word. (A bit of trickiness is required
-           to get this to work for a link with a web name prefix.)
+         - A <nop> and ! prefix is used to escape a Wiki word. (A bit of
+           trickiness is required to get this to work for a link with a web
+           name prefix.)
 
          Weirdness/limitation: A wiki word will be escaped if preceeded by a
          punctuation character, unless that character is part of the markup.
@@ -366,36 +368,36 @@
 
         <!-- Anchor
 
-        Hash prefixed WikiWord at the start of a line.
+         Hash prefixed WikiWord at the start of a line.
         -->
         <context id="anchor" style-ref="anchor">
             <match>^#\%{wiki-word}</match>
         </context>
 
-        <!-- Contexts that can appear within another context, such as a table row or heading. -->
+        <!-- Contexts that can appear within another context -->
         <context id="embedded">
-        	<include>
+            <include>
                 <context ref="formatted-text"/>
                 <context ref="variable"/>
                 <context ref="links"/>
-        	</include>
+            </include>
         </context>
 
         <!-- All types of links -->
         <context id="links">
-        	<include>
-        		<context ref="wiki-link"/>
-        		<context ref="forced-link"/>
-        		<context ref="specific-link"/>
-        		<context ref="def:email-address"/>
-        		<context ref="def:net-address"/>
-        	</include>
+            <include>
+                <context ref="wiki-link"/>
+                <context ref="forced-link"/>
+                <context ref="specific-link"/>
+                <context ref="def:email-address"/>
+                <context ref="def:net-address"/>
+            </include>
         </context>
 
         <!-- Top-level TWiki context -->
         <context id="twiki">
             <include>
-                <!-- xml-elements must appear before html:html so that it takes precedence. -->
+                <!-- xml-elements must appear before html:html -->
                 <context ref="xml-elements"/>
                 <context ref="variable"/>
                 <context ref="variable-definition"/>
