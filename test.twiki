@@ -414,4 +414,24 @@ html language spec.
 
 %TMPL:P{topicactions}%
 
+---++ topic metadata (TOPICINFO, FORMS, PREFERNCES and others)
+
+%META:TOPICINFO{author="KennethLavrsen" date="1231081686" format="1.1" reprev="1.2" version="1.2"}%
+Enclosing a !Web.TopicName link in color code stops it from being rendered as a link.
+
+
+%META:FORM{name="ItemTemplate"}%
+%META:FIELD{name="Summary" attributes="M" title="Summary" value="Color tags stop proper rendering of link"}%
+%META:FIELD{name="ReportedBy" attributes="M" title="ReportedBy" value="TWiki:Main.KoenMartens"}%
+%META:FIELD{name="Codebase" attributes="" title="Codebase" value="trunk"}%
+%META:FIELD{name="SVNRange" attributes="" title="SVN Range" value="TWiki-4.2.3, Wed, 06 Aug 2008, build 17396"}%
+%META:FIELD{name="AppliesTo" attributes="M" title="AppliesTo" value="Engine"}%
+%META:FIELD{name="Component" attributes="" title="Component" value=""}%
+%META:FIELD{name="Priority" attributes="M" title="[[Priority]]" value="Low"}%
+%META:FIELD{name="CurrentState" attributes="M" title="CurrentState" value="No Action Required"}%
+%META:FIELD{name="WaitingFor" attributes="" title="WaitingFor" value=""}%
+%META:FIELD{name="Checkins" attributes="" title="Checkins" value=""}%
+%META:FIELD{name="TargetRelease" attributes="" title="TargetRelease" value="n/a"}%
+%META:FIELD{name="ReleasedIn" attributes="" title="ReleasedIn" value=""}%
+%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="ItemView"}%
 
