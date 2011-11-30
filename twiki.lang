@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
- GtkSourceView language definition for TWiki markup
+ GtkSourceView language definition for TML markup used by TWiki and Foswiki
  Copyright (C) 2011 Darryl Lawson <darryl.lawson@me.com>
 
  This library is free software; you can redistribute it and/or
@@ -20,12 +20,14 @@
 
 -->
 
-<language id="twiki" _name="TWiki" version="2.0" _section="Markup">
+<language id="twiki" _name="TML" version="2.0" _section="Markup">
 
     <!--
 
      This language definition reflects:
      http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules
+     and (should be almost identical)
+     http://foswiki.org/System/TextFormattingRules
 
     -->
 
