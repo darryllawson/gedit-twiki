@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
- GtkSourceView language definition for TWiki markup
+ GtkSourceView language definition for TML markup used by TWiki and Foswiki
  Copyright (C) 2011 Darryl Lawson <darryl.lawson@me.com>
 
  This library is free software; you can redistribute it and/or
@@ -20,12 +20,14 @@
 
 -->
 
-<language id="twiki" _name="TWiki" version="2.0" _section="Markup">
+<language id="twiki" _name="TML" version="2.0" _section="Markup">
 
     <!--
 
      This language definition reflects:
      http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules
+     and (should be almost identical)
+     http://foswiki.org/System/TextFormattingRules
 
     -->
 
@@ -45,6 +47,8 @@
         <style id="separator" _name="Separator (horzontal rule)" map-to="def:statement"/>
         <style id="verbatim" _name="Verbatim text" map-to="def:constant"/>
         <style id="variable" _name="Variable" map-to="def:identifier"/>
+        <style id="META" _name="topic META" map-to="def:identifier"/>
+        <style id="TMPL" _name="Skin Template" map-to="def:identifier"/>
         <style id="tag" _name="Tag" map-to="html:tag"/>
     </styles>
 
@@ -266,6 +270,38 @@
          -->
         <context id="variable">
             <include>
+<!-- TODO, I don't grok how to extract into context id="TMPL" yet -->
+                <!-- skin tmpl without parameters. Single line. -->
+                <context style-ref="TMPL">
+                    <match>(?&lt;!!)%TMPL:(END|PREV)%</match>
+                </context>
+                <!-- skin TMPL:DEF/INCLUDE WITH parameters. Multi line. -->
+                <context style-ref="variable">
+                    <start>%TMPL:(DEF|INCLUDE|P){</start>
+                    <end>}%</end>
+                    <include>
+                        <context style-ref="xml:attribute-name">
+                            <match>\b\w+\s*=</match>
+                        </context>
+                        <context style-ref="xml:attribute-value">
+                            <match>"[^"]+"</match>
+                        </context>
+                    </include>
+                </context>
+                <!-- topic META TOPICINFO, FORM, FIELD, PREFERNCE and custom-->
+                <context style-ref="variable">
+                    <start>^%META:\w+{</start>
+                    <end>}%$</end>
+                    <include>
+                        <context style-ref="xml:attribute-name">
+                            <match>\b\w+\s*=</match>
+                        </context>
+                        <context style-ref="xml:attribute-value">
+                            <match>"[^"]+"</match>
+                        </context>
+                    </include>
+                </context>
+
                 <!-- Variable without parameters. Single line. -->
                 <context style-ref="variable">
                     <match>(?&lt;!!)%\w+%</match>

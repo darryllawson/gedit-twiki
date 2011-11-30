@@ -1,14 +1,14 @@
 # gedit-twiki
 
 This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language
-definition that enables syntax highlighting for [TWiki](http://twiki.org/)
-markup in [gedit](http://projects.gnome.org/gedit/), the official GNOME text
-editor.
+definition that enables syntax highlighting for TML markup, used by 
+[TWiki](http://twiki.org/) and [Foswiki](http://foswiki.org/) in 
+[gedit](http://projects.gnome.org/gedit/), the official GNOME text editor.
 
 
-### Why is TWiki syntax highlighting useful?
+### Why is TML syntax highlighting useful?
 
-TWiki has you editing pages in a HTML textarea or a web based WYSIWYG editor;
+TWiki&Foswiki have you editing pages in a HTML textarea or a web based WYSIWYG editor;
 wouldn't you rather use a proper text editor like gedit? Once you are editing
 TWiki pages with gedit, the next thing you'll want is syntax highlighting, for
 benefits such as:
