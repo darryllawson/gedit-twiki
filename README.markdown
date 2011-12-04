@@ -1,17 +1,17 @@
 # gedit-twiki
 
-This is a [GtkSourceView](http://projects.gnome.org/gtksourceview/) language
-definition that enables syntax highlighting for TML markup, used by 
-[TWiki](http://twiki.org/) and [Foswiki](http://foswiki.org/) in 
-[gedit](http://projects.gnome.org/gedit/), the official GNOME text editor.
-
+A [GtkSourceView](http://projects.gnome.org/gtksourceview/) language
+definition for TML (Topic Markup Language), used by
+[TWiki](http://twiki.org/) and [Foswiki](http://foswiki.org/), that enables
+syntax highlighting in [gedit](http://projects.gnome.org/gedit/), the official
+GNOME text editor.
 
 ### Why is TML syntax highlighting useful?
 
-TWiki&Foswiki have you editing pages in a HTML textarea or a web based WYSIWYG editor;
-wouldn't you rather use a proper text editor like gedit? Once you are editing
-TWiki pages with gedit, the next thing you'll want is syntax highlighting, for
-benefits such as:
+TWiki and Foswiki have you editing pages in a HTML textarea or a web based
+WYSIWYG editor; wouldn't you rather use a proper text editor like gedit? Once
+you are editing TML pages with gedit, the next thing you'll want is syntax
+highlighting, for benefits such as:
 
 * Highlight headings, making document navigation easier.
 * Highlight markup, making it easier to visualise formatting and detect syntax
@@ -26,22 +26,21 @@ See below for more information.
 
 ### Installation
 
-Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3).
+Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3)
 
-Download the latest version of gedit-twiki from
-https://github.com/darryllawson/gedit-twiki/downloads/, extract the zip
+Download the latest version from
+https://github.com/darryllawson/gedit-twiki/zipball/master, extract the zip
 and copy twiki.lang into the language-specs directory:
 
 * *Linux (gedit 2.x):* ~/.local/share/gtksourceview-2.0/language-specs/ <br>
-(Create with "mkdir -p ..." if does not exist.)
+(Create with "mkdir -p ..." if it doesn't exist)
 * *Linux (gedit 3.x):* ~/.local/share/gtksourceview-3.0/language-specs/ <br>
-(Create with "mkdir -p ..." if does not exist.)
+(Create with "mkdir -p ..." if it doesn't exist)
 * *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
 * *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
 
-Then close all gedit windows and restart. Select TWiki
-highlighting from the View menu: View > Highlight Mode > Markup > TWiki.
-
+Then close all gedit windows and restart. Select TML
+highlighting from the View menu: View > Highlight Mode > Markup > TML (TWiki/Foswiki).
 
 ### Configuring the It's All Text! Firefox Plugin
 
@@ -56,18 +55,16 @@ Firefox Add-on, and configure its preferences from
 * *Hot Key (Linux)*: ctrl E
 * *Hot Key (Max OS X)*: meta E (meta is the command key)
 
-The *Hot Key* and *File Extensions* settings above are of course just
-recommendations.
+The *Hot Key* and *File Extensions* settings above are recommendations only.
 
 To try it out, edit a random TWiki page at
 http://twiki.org/cgi-bin/edit/Sandbox/RandomTestTopic937. Logon with the
 guest account (Username: TWikiGuest, Password: guest). Click the pick shaped
 icon ("Edit TWiki Markup") on the toolbar, click the blue Edit button (usually
-at the bottom right) and gedit should pop up in TWiki editing mode.
+at the bottom right) and gedit should pop up in TML editing mode.
 
 *Tip:* Right click on the blue Edit button for a menu of "Edit as" items and
 "Edit with new extension...".
-
 
 ### Contributing
 
@@ -75,7 +72,6 @@ This project is hosted at https://github.com/darryllawson/gedit-twiki/.
 Report issues at https://github.com/darryllawson/gedit-twiki/issues/
 and see https://github.com/darryllawson/gedit-twiki/wiki/ for more
 development information.
-
 
 ### License
 

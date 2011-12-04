@@ -1,10 +1,10 @@
----+ TWiki Gedit Syntax Highlighter Test Page
+---+ TML Language Definition Test Page
 
 %TOC%
 
 ---++ Introduction
 
-This is a a test page for the Gedit Syntax highlighter. This page is based on http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules.
+This is a test page for the TML (Topic Markup Langauge) !GtkSourceView Language Definition. This page endeavours to cover all aspects of TML, which are documented at http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules and http://foswiki.org/System/TextFormattingRules.
 
 ---++ Headings
 
@@ -14,7 +14,7 @@ This is a a test page for the Gedit Syntax highlighter. This page is based on ht
 ---+++ Heading can have %VARIABLES%
 ---+++ Heading can have [[Links]]
 -------+ Can have more than three dashes.
- ---+++ Won't work, the line must start with a -.
+ ---+++ Won't work, the line must start with a -
 
 
 ---++ Formatted Text
@@ -267,18 +267,22 @@ Web name prefixes must begin with a capital. This isn't a valid link: nogood.Wik
 
 Escape a wiki word with a ! or <nop>: !WikiWord, <nop>WikiWord, !WebName.WikiWord, <nop>WebName.WikiWord.
 
-<noautolink>Not that we don't do anything for NoAutoLink, except the XML element highlighting.</noautolink>
+<noautolink>Not that we don't do anything for NoAutoLink, except the XML element highlighting. This is a known limitation.</noautolink>
+
+Weirdness: punctuation character (such as  '%')  pre-ceeding a WikiWord,
+escapes it. For examples these are not rendered as auto-linked:
+
+%WikiWord
+%RED%WikiWord%ENDCOLOR%
 
 
 ---+++ Anchors
 
-And an anchor is a wiki word preceeded by # and appearing at the start of a line, like this:
+#WikiWordAnchor
 
-#WikiWord
+ #NotAtStartOfLine so this isn't valid
 
- #NotAtStartOfLine
-
-#notAWikiWord
+#notAWikiWord so this isn't valid
 
 #nor this
 
@@ -317,44 +321,39 @@ Other links:
    * news://url.com/here
 
 
+*Hello %INCLUDE{alpha="ass"}%*
+
 ---++ Variable References
 
 %TOPIC%
-
 %ATTACHURL%/image.gif
-
-   * yes, the quotes are mostly optional
-%INCLUDE{SomeTopic}%
-
-   * and single quotes are useable at times
-%INCLUDE{'SomeTopic'}%
-
-
+%SEARCH{"foo" format="$topic"}%
 %INCLUDE{"SomeTopic"}%
-
 %INCLUDE{"TWiki05x01.SiteMap"}%
-
-%SEARCH{"sushi"}%
-
+%SEARCH{"sushi" ala="as"}%
 %ICON{"warning"}%
 
-Parameterised variables: %EXAMPLE{ "foo" PARAM1="bar" }%
+The quotes are optional:
+  %INCLUDE{SomeTopic}%
 
-%INCLUDE{"OtherTopic" ARG="arg"}%.
+And single quotes are useable at times:
+  %INCLUDE{'SomeTopic'}%
 
-Nested TML
+Parameterised variables:
+  %EXAMPLE{ al="foo" PARAM1="bar" }%
+  %INCLUDE{"OtherTopic" ARG="arg"}%.
 
-%SEARCH{"%INCLUDE{"OtherTopic" ARG="arg"}%"}%
+Variables can be bestedt:
+  %SEARCH{"%INCLUDE{"OtherTopic" ARG="arg"}%"}%
+  %SEARCH{"%INCLUDE{"OtherTopic" ARG="arg"}%" nonoise="on"}%
+  And multi-line:
+  %SEARCH{
+    "%INCLUDE{"OtherTopic" ARG="arg"}%" 
+    nonoise="on"
+  }%
 
-%SEARCH{"%INCLUDE{"OtherTopic" ARG="arg"}%" nonoise="on"}%
-
-multi-line TML
-
-%SEARCH{
-  "%INCLUDE{"OtherTopic" ARG="arg"}%" 
-  nonoise="on"
-}%
-
+An-unterminated attribute value string, will still terminate at }%:
+%SEARCH{"term" format="$topic}% (This is normal text)"
 
 Escape a variable with a ! prefix: !%SOMEVARIABLE%, !%FOO{a="1"}%
 
@@ -382,12 +381,28 @@ or WikiWords:
 
    * Set BETA = this is a WikiWord and *formatted* text
 
+The variable name must be all capitals, aplhanumeric and not start with a
+digit. These are NOT valid:
+
+   * Set lower = 100
+   * Set 2ALPHA = 100
+   * Set ALPHA:BETA = 100 
+
+These are valid:
+ 
+   * Set FOO_BAR_2 = 200
+
 The format needs to be exact. The following do NOT work:
 
   * Set BLAH = 2
    * set BLAH = 3
    * Set BLAH  = 4
    * Set  BLAH = 5
+
+Local is a special way to set variables:
+
+   * Local BLAH = 10
+
 
 ---++ HTML
 
@@ -406,6 +421,8 @@ Comments are HTML/XML style, and therefore are handled by the
 html language spec.
 -->
 
+(there are template comments though, see below)
+
 ---++ Skin templates
 
 %TMPL:INCLUDE{view}%%{
@@ -422,25 +439,15 @@ template comments
 
 TMPL markup can be multi-line in odd ways
 
----++ topic metadata (TOPICINFO, FORMS, PREFERNCES and others)
+---++ Topic metadata
 
 %META:TOPICINFO{author="KennethLavrsen" date="1231081686" format="1.1" reprev="1.2" version="1.2"}%
-Enclosing a !Web.TopicName link in color code stops it from being rendered as a link.
-
-and not %META:FORM{name="ItemTemplate"}%
-
 %META:FORM{name="ItemTemplate"}%
 %META:FIELD{name="Summary" attributes="M" title="Summary" value="Color tags stop proper rendering of link"}%
-%META:FIELD{name="ReportedBy" attributes="M" title="ReportedBy" value="TWiki:Main.KoenMartens"}%
-%META:FIELD{name="Codebase" attributes="" title="Codebase" value="trunk"}%
-%META:FIELD{name="SVNRange" attributes="" title="SVN Range" value="TWiki-4.2.3, Wed, 06 Aug 2008, build 17396"}%
-%META:FIELD{name="AppliesTo" attributes="M" title="AppliesTo" value="Engine"}%
-%META:FIELD{name="Component" attributes="" title="Component" value=""}%
-%META:FIELD{name="Priority" attributes="M" title="[[Priority]]" value="Low"}%
-%META:FIELD{name="CurrentState" attributes="M" title="CurrentState" value="No Action Required"}%
-%META:FIELD{name="WaitingFor" attributes="" title="WaitingFor" value=""}%
-%META:FIELD{name="Checkins" attributes="" title="Checkins" value=""}%
-%META:FIELD{name="TargetRelease" attributes="" title="TargetRelease" value="n/a"}%
-%META:FIELD{name="ReleasedIn" attributes="" title="ReleasedIn" value=""}%
 %META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="ItemView"}%
+%META:CUSTOM{x="a" y="b"}%
+
+Meta variables must start at the start of a line, this is not valid:
+  %META:FORM{name="ItemTemplate"}%
+nor this %META:FORM{name="ItemTemplate"}%
 

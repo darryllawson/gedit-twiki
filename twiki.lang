@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 
- GtkSourceView language definition for TML markup used by TWiki and Foswiki
+ GtkSourceView language definition for TML (Topic Markup Language)
+ used by TWiki and Foswiki
  Copyright (C) 2011 Darryl Lawson <darryl.lawson@me.com>
 
  This library is free software; you can redistribute it and/or
@@ -20,13 +21,12 @@
 
 -->
 
-<language id="twiki" _name="TML" version="2.0" _section="Markup">
+<language id="tml" _name="TML (TWiki/Foswiki)" version="2.0" _section="Markup">
 
     <!--
 
      This language definition reflects:
-     http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules
-     and (should be almost identical)
+     http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules, and
      http://foswiki.org/System/TextFormattingRules
 
     -->
@@ -40,16 +40,15 @@
 
     <styles>
         <style id="anchor" _name="Anchor" map-to="def:identifier"/>
-        <style id="formatted-text" _name="Formatted text" map-to="def:constant"/>
+        <style id="formatted-text" _name="Formatted Text" map-to="def:constant"/>
         <style id="heading" _name="Heading" map-to="def:type"/>
-        <style id="link" _name="link" map-to="def:underlined"/>
-        <style id="markup" _name="TWiki markup" map-to="def:statement"/>
-        <style id="separator" _name="Separator (horzontal rule)" map-to="def:statement"/>
-        <style id="verbatim" _name="Verbatim text" map-to="def:constant"/>
+        <style id="link" _name="Link" map-to="def:underlined"/>
+        <style id="markup" _name="Markup" map-to="def:statement"/>
         <style id="variable" _name="Variable" map-to="def:identifier"/>
-        <style id="META" _name="topic META" map-to="def:identifier"/>
-        <style id="TMPL" _name="Skin Template" map-to="def:identifier"/>
-        <style id="tag" _name="Tag" map-to="html:tag"/>
+        <style id="parameter-name" _name="Variable Parameter Name" map-to="xml:attribute-name"/>
+        <style id="parameter-value" _name="Variable Parameter Value" map-to="xml:attribute-value"/>
+        <style id="element" _name="XML Element" map-to="xml:element-name"/>
+        <style id="comment" _name="Comment" map-to="def:comment"/>
     </styles>
 
     <definitions>
@@ -132,9 +131,9 @@
             <start>&lt;(verbatim)\s*&gt;</start>
             <end>&lt;/\%{1@start}\s*&gt;</end>
             <include>
-                <context sub-pattern="0" where="start" style-ref="tag"/>
-                <context sub-pattern="0" where="end" style-ref="tag"/>
-                <context id="verbatim-body" style-ref="verbatim" extend-parent="false">
+                <context sub-pattern="0" where="start" style-ref="element"/>
+                <context sub-pattern="0" where="end" style-ref="element"/>
+                <context id="verbatim-body" style-ref="formatted-text" extend-parent="false">
                     <match>.*</match>
                 </context>
             </include>
@@ -151,12 +150,12 @@
         <context id="pre">
             <start>&lt;pre\s*&gt;</start>
             <include>
-                <context sub-pattern="0" where="start" style-ref="tag"/>
+                <context sub-pattern="0" where="start" style-ref="element"/>
                 <context ref="variable"/>
                 <!-- end-parent="true" is used rather than <end>, to stop the
                  html:html context matching </pre>.
                  -->
-                <context end-parent="true" style-ref="tag">
+                <context end-parent="true" style-ref="element">
                     <match>&lt;/pre\s*&gt;</match>
                 </context>
                 <context ref="html:html"/>
@@ -173,9 +172,9 @@
         <context id="literal">
             <start>&lt;literal\s*&gt;</start>
             <include>
-                <context sub-pattern="0" where="start" style-ref="tag"/>
+                <context sub-pattern="0" where="start" style-ref="element"/>
                 <context ref="variable"/>
-                <context end-parent="true" style-ref="tag">
+                <context end-parent="true" style-ref="element">
                     <match>&lt;/literal\s*&gt;</match>
                 </context>
                 <context ref="html:html"/>
@@ -196,7 +195,7 @@
          Non-dash characters (including white space) are not permitted after
          the 3 dashes.
         -->
-        <context id="separator" style-ref="separator">
+        <context id="separator" style-ref="markup">
             <match>^---+$</match>
         </context>
 
@@ -263,75 +262,131 @@
             </include>
         </context>
 
-        <!-- Variable Reference
+        <!-- Variable names must be all capitals, may have digits and
+             underscores, can't start with digit. -->
+        <define-regex id="varname">[A-Z][A-Z0-9_]*</define-regex>
 
-         - White space between % and the variable name is not permitted.
+        <!-- Regexs to match start and end of a paramter definiton. -->
+        <define-regex id="param-start">(\w+\s*=)\s*\"(?=.*\")</define-regex>
+        <define-regex id="param-end">\"|(?=}%)</define-regex>
+
+        <!-- Variable
+
+         - White space between the opening and closing % characters and the
+           variable name is not permitted.
          - A ! prefix can be used to escape the variable.
+         - Parameter nmae/value pair is <name><optional space>=<optional space>"<value>"
          -->
         <context id="variable">
             <include>
-<!-- TODO, I don't grok how to extract into context id="TMPL" yet -->
-                <!-- skin tmpl without parameters. Single line. -->
-                <context style-ref="TMPL">
-                    <match>(?&lt;!!)%TMPL:(END|PREV)%</match>
-                </context>
-                <!-- skin TMPL:DEF/INCLUDE WITH parameters. Multi line. -->
+
+                <!-- Variable without parameters. Must be a single line. -->
                 <context style-ref="variable">
-                    <start>%TMPL:(DEF|INCLUDE|P){</start>
+                    <match>(?&lt;!!)%\%{varname}%</match>
+                </context>
+
+                <!-- Variable with parameters. Can be multiple lines. -->
+                <context style-ref="parameter-value">
+                    <start>(?&lt;!!)%\%{varname}{</start>
                     <end>}%</end>
                     <include>
-                        <context style-ref="xml:attribute-name">
-                            <match>\b\w+\s*=</match>
+                        <context sub-pattern="0" where="start" style-ref="variable"/>
+                        <context sub-pattern="0" where="end" style-ref="variable"/>
+
+                        <!-- Parameter of the form: name="value" -->
+                        <context style-ref="parameter-value" end-at-line-end="true">
+                            <start>\%{param-start}</start>
+                            <end>\%{param-end}</end>
+                            <include>
+                                <context sub-pattern="1" where="start" style-ref="parameter-name"/>
+                                <context ref="variable"/>
+                            </include>
                         </context>
-                        <context style-ref="xml:attribute-value">
-                            <match>"[^"]+"</match>
-                        </context>
-                    </include>
-                </context>
-                <!-- topic META TOPICINFO, FORM, FIELD, PREFERNCE and custom-->
-                <context style-ref="variable">
-                    <start>^%META:\w+{</start>
-                    <end>}%$</end>
-                    <include>
-                        <context style-ref="xml:attribute-name">
-                            <match>\b\w+\s*=</match>
-                        </context>
-                        <context style-ref="xml:attribute-value">
-                            <match>"[^"]+"</match>
-                        </context>
+
+                        <!-- Nested variable -->
+                        <context ref="variable"/>
                     </include>
                 </context>
 
-                <!-- Variable without parameters. Single line. -->
-                <context style-ref="variable">
-                    <match>(?&lt;!!)%\w+%</match>
-                </context>
-                <!-- Variable WITH parameters. Multi line. -->
-                <context style-ref="variable">
-                    <start>(?&lt;!!)%\w+{</start>
-                    <end>}%</end>
+            </include>
+        </context>
+
+        <!-- Topic meta data.
+
+         - META TOPICINFO, FORM, FIELD, PREFERNCE and custom.
+         - Similar to a variable but with some restrictions:
+           - Must appear at the very start of the line.
+           - Can't be nested.
+         -->
+        <context id="meta" style-ref="parameter-value">
+            <start>^%META:\%{varname}{</start>
+            <end>}%</end>
+            <include>
+                <context sub-pattern="0" where="start" style-ref="variable"/>
+                <context sub-pattern="0" where="end" style-ref="variable"/>
+                <!-- Parameter of the form: name="value" -->
+                <context style-ref="parameter-value" end-at-line-end="true">
+                    <start>\%{param-start}</start>
+                    <end>\%{param-end}</end>
                     <include>
-                        <context style-ref="xml:attribute-name">
-                            <match>\b\w+\s*=</match>
-                        </context>
-                        <context style-ref="xml:attribute-value">
-                            <match>"[^"]+"</match>
-                        </context>
+                        <context sub-pattern="1" where="start" style-ref="parameter-name"/>
                     </include>
                 </context>
             </include>
         </context>
 
+        <!-- Skin template directives.
+
+         See http://foswiki.org/System/SkinTemplates.
+         -->
+        <context id="template">
+            <include>
+
+                <!-- Template directive without parameters. Must be a single line. -->
+                <context style-ref="variable">
+                    <match>%TMPL:(END|PREV)%</match>
+                </context>
+
+                <!-- Template directive with parameters. Can be multiple lines. -->
+                <context style-ref="parameter-value">
+                    <start>%TMPL:(DEF|INCLUDE|P){</start>
+                    <end>}%</end>
+                    <include>
+                        <context sub-pattern="0" where="start" style-ref="variable"/>
+                        <context sub-pattern="0" where="end" style-ref="variable"/>
+
+                        <!-- Parameter of the form: name="value" -->
+                        <context style-ref="parameter-value" end-at-line-end="true">
+                            <start>\%{param-start}</start>
+                            <end>\%{param-end}</end>
+                            <include>
+                                <context sub-pattern="1" where="start" style-ref="parameter-name"/>
+                            </include>
+                        </context>
+                    </include>
+                </context>
+
+               <!-- Template comment. -->
+                <context style-ref="comment">
+                    <start>%{</start>
+                    <end>}%</end>
+                </context>
+
+            </include>
+        </context>
+
         <!-- Variable Definition
 
-         The format is:
-         [multiple of 3 sp] * [sp] Set [sp] VARIABLENAME [sp] = [sp] value
+         - The format is:
+           [multiple of 3 sp] * [sp] Set|Local [sp] VARIABLENAME [sp] = [sp] value
+         - See the definition of varname for the restrictions on the
+           variable name.
          -->
         <context id="variable-definition" end-at-line-end="true">
-            <start>^(?:   )+(\* Set) (\w+) (=)</start>
+            <start>^(?:   )+(\* (?:Set|Local)) (\%{varname}) (=)</start>
             <include>
                 <context sub-pattern="1" where="start" style-ref="markup"/>
-                <context sub-pattern="2" where="start" style-ref="xml:attribute-name"/>
+                <context sub-pattern="2" where="start" style-ref="variable"/>
                 <context sub-pattern="3" where="start" style-ref="markup"/>
                 <context ref="embedded"/>
             </include>
@@ -349,11 +404,13 @@
            name prefix.)
 
          Weirdness/limitation: A wiki word will be escaped if preceeded by a
-         punctuation character, unless that character is part of the markup.
+         punctuation character, unless that character is part of valid markup.
          This is too hard to detect, and non-common, so we don't detect this.
+         (but we do alow these characters to escape, as they are not part
+          of the markup: %)
         -->
 
-        <define-regex id="not-escaped">(?&lt;!!|&lt;nop&gt;)</define-regex>
+        <define-regex id="not-escaped">(?&lt;![!%]|&lt;nop&gt;)</define-regex>
 
         <define-regex id="wiki-webname">\b[A-Z]\w*\b</define-regex>
 
@@ -430,12 +487,14 @@
             </include>
         </context>
 
-        <!-- Top-level TWiki context -->
-        <context id="twiki">
+        <!-- Top level -->
+        <context id="tml">
             <include>
                 <!-- xml-elements must appear before html:html -->
                 <context ref="xml-elements"/>
                 <context ref="variable"/>
+                <context ref="meta"/>
+                <context ref="template"/>
                 <context ref="variable-definition"/>
                 <context ref="heading"/>
                 <context ref="formatted-text"/>
