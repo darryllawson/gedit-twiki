@@ -7,13 +7,18 @@ This is a test page for the TML (Topic Markup Langauge) !GtkSourceView Language 
 ---++ Headings
 
 ---+ Heading 1
----+!! Heading 1
 ---+++ Heading 3
 ---+++ Heading can have %VARIABLES%
 ---+++ Heading can have [[Links]]
 -------+ Can have more than three dashes.
  ---+++ Won't work, the line must start with a -
 
+!!+ can be used to exlucde a heading from a TOC (note how only the first !! is
+matched):
+---+!! Heading 1!!!!!
+---+++ !!Heading 3
+or to trim how the heading appears in the TOC: 
+---+++ Heading 3!!:some other stuff!!
 
 ---++ Formatted Text
 

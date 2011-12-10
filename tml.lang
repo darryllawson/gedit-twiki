@@ -57,12 +57,19 @@
 
          Three or more dashes at the beginning of a line, followed by plus
          signs and the heading text.
+
+         "!!" can be used to exclude the heading from the TOC, when placed
+         immediately after '+', or trim the name displayed in the TOC, when
+         placed elsewhere within the heading.
         -->
         <context id="heading" style-ref="heading">
             <start>^---+\++</start>
             <end>$</end>
             <include>
                 <context ref="embedded"/>
+                <context style-ref="markup" once-only="true">
+                    <match>!!+</match>
+                </context>
             </include>
         </context>
 
@@ -86,12 +93,13 @@
 
         <context id="formatted-text">
             <include>
-                <!-- Assert there is a valid char behind the opening indicator. -->
+                <!-- Assert a valid char behind an opening indicator. -->
                 <define-regex id="ft-behind">(?&lt;=^|[\s\!\(])</define-regex>
-                <!-- Assert there is a valid char ahead of the closing indicator. -->
+                <!-- Assert a valid char ahead of a closing indicator. -->
                 <define-regex id="ft-ahead">(?=$|[\s\,\.\?\!\:\;\)])</define-regex>
-
+                <!-- Match formatted text body. -->
                 <define-regex id="ft-body">(\S|\S.*\S)</define-regex>
+                <!-- Assert there isn't a non-space char behind the body. -->
                 <define-regex id="ft-body-behind">(?&lt;=\S)</define-regex>
 
                 <context id="bold" style-ref="formatted-text" extend-parent="false">
