@@ -32,8 +32,8 @@
     -->
 
     <metadata>
-        <property name="mimetypes">text/twiki</property>
-        <property name="globs">*.twiki</property>
+        <property name="mimetypes">text/tml</property>
+        <property name="globs">*.tml</property>
         <property name="block-comment-start">&lt;!--</property>
         <property name="block-comment-end">--&gt;</property>
     </metadata>
@@ -122,7 +122,7 @@
 
         <!-- <verbatim>
 
-         Can not contain TWiki markup or HTML.
+         Can not contain TML or HTML.
 
          Limitation: The <verbatim> and </verbatim> tags cannot be split across
          multiple lines.
@@ -181,7 +181,7 @@
             </include>
         </context>
 
-        <!-- XML elements which have special meaning in TWiki. -->
+        <!-- XML elements which have special meaning in TML. -->
         <context id="xml-elements">
             <include>
                 <context ref="verbatim"/>

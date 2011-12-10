@@ -17,7 +17,7 @@ highlighting, for benefits such as:
 * Highlight markup, making it easier to visualise formatting and detect syntax
   errors. For example, you'll know when you accidentally typed four spaces
   instead of the requisite three.
-* Highlight wiki words; you'll know straight away if you have typed a valid =
+* Highlight wiki words; you'll know straight away if you have typed a valid
   one, and it'll also be obvious when you need to escape one.
 
 The [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
@@ -30,7 +30,8 @@ Requires: gedit 2 (and GtkSourceView 2) or gedit 3 (and GtkSourceView 3)
 
 Download the latest version from
 https://github.com/darryllawson/gedit-twiki/zipball/master, extract the zip
-and copy twiki.lang into the language-specs directory:
+and copy tml.lang into the language-specs directory, whose location varies
+according to your platform:
 
 * *Linux (gedit 2.x):* ~/.local/share/gtksourceview-2.0/language-specs/ <br>
 (Create with "mkdir -p ..." if it doesn't exist)
@@ -39,19 +40,20 @@ and copy twiki.lang into the language-specs directory:
 * *Mac OS X:* /Applications/gedit.app/Contents/Resources/share/gtksourceview-2.0/language-specs/
 * *Windows:* C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
 
-Then close all gedit windows and restart. Select TML
-highlighting from the View menu: View > Highlight Mode > Markup > TML (TWiki/Foswiki).
+Then close all gedit windows and restart gedit. Select TML
+highlighting from the gedit menu:
+View > Highlight Mode > Markup > TML (TWiki/Foswiki).
 
 ### Configuring the It's All Text! Firefox Plugin
 
 Install the [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
-Firefox Add-on, and configure its preferences from
-*Tools > It's All Text! > Preferences...*:
+Firefox Add-on, select Tools > It's All Text! > Preferences... and apply the
+following:
 
 * *Editor (Linux)*: /usr/bin/gedit
 * *Editor (Mac OS X)*: /Applications/gedit.app
-* *File Extensions*: ﻿.twiki,.txt,.html,.css,.xml,.xsl,.js <br>
-(.twiki appearing first makes it the default.)
+* *File Extensions*: ﻿.tml,.txt,.html,.css,.xml,.xsl,.js <br>
+(.tml appearing first makes it the default.)
 * *Hot Key (Linux)*: ctrl E
 * *Hot Key (Max OS X)*: meta E (meta is the command key)
 

@@ -1,10 +1,8 @@
 ---+ TML Language Definition Test Page
 
-%TOC%
-
----++ Introduction
-
 This is a test page for the TML (Topic Markup Langauge) !GtkSourceView Language Definition. This page endeavours to cover all aspects of TML, which are documented at http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules and http://foswiki.org/System/TextFormattingRules.
+
+%TOC%
 
 ---++ Headings
 
@@ -421,8 +419,6 @@ Comments are HTML/XML style, and therefore are handled by the
 html language spec.
 -->
 
-(there are template comments though, see below)
-
 ---++ Skin templates
 
 %TMPL:INCLUDE{view}%%{
@@ -449,5 +445,5 @@ TMPL markup can be multi-line in odd ways
 
 Meta variables must start at the start of a line, this is not valid:
   %META:FORM{name="ItemTemplate"}%
-nor this %META:FORM{name="ItemTemplate"}%
+nor this: %META:FORM{name="ItemTemplate"}%
 
