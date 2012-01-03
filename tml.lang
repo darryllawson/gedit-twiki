@@ -24,11 +24,9 @@
 <language id="tml" _name="TML (TWiki/Foswiki)" version="2.0" _section="Markup">
 
     <!--
-
      This language definition reflects:
-     http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules, and
+     http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules and
      http://foswiki.org/System/TextFormattingRules
-
     -->
 
     <metadata>
@@ -172,8 +170,8 @@
 
         <!-- <literal>
 
-         Same as <pre>, but is rendered a differenty (<pre> is rendered as
-         monospace and preserves newlines.
+         Same as <pre>, but is rendered differently (<pre> is rendered as
+         monospace and preserves newlines).
 
          Limitation: same as for <verbatim> above.
          -->
@@ -227,12 +225,12 @@
         <!-- Definition List
 
          Must occur at the start of a line, multiple of 3 space characters
-         followed by a $, then an arbitray amount of text (which may be
-         formatted), then a ':', and then atleast one space.
+         followed by a $, then an arbitrary amount of text (which may be
+         formatted), then a ':', and then at least one space.
         -->
         <context id="definition-list" end-at-line-end="true">
-            <start>^(?:   )+(\$)(?=.*:.+)</start>
-            <end>:</end>
+            <start>^(?:   )+(\$)(?=.*: )</start>
+            <end>: </end>
             <include>
                 <context sub-pattern="1" where="start" style-ref="markup"/>
                 <context sub-pattern="0" where="end" style-ref="markup"/>
@@ -411,10 +409,10 @@
            trickiness is required to get this to work for a link with a web
            name prefix.)
 
-         Weirdness/limitation: A wiki word will be escaped if preceeded by a
+         Weirdness/limitation: A wiki word will be escaped if preceded by a
          punctuation character, unless that character is part of valid markup.
          This is too hard to detect, and non-common, so we don't detect this.
-         (but we do alow these characters to escape, as they are not part
+         (but we do allow these characters to escape, as they are not part
           of the markup: %)
         -->
 
@@ -467,10 +465,7 @@
             </include>
         </context>
 
-        <!-- Anchor
-
-         Hash prefixed WikiWord at the start of a line.
-        -->
+        <!-- Anchor: Hash prefixed WikiWord at the start of a line -->
         <context id="anchor" style-ref="anchor">
             <match>^#\%{wiki-word}</match>
         </context>

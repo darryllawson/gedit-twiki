@@ -108,7 +108,6 @@ Bold Fixed
 Weirdness
    * __YES alpha_, but __ NO_
 
-
 ---++ Verbatim, Pre and Literal Text
 
    * Set VAR = VAR_VALUE
@@ -150,7 +149,6 @@ These are not:
 -
 --- asasas
 ---    
-
 
 ---++ Lists
 
@@ -209,33 +207,35 @@ or uppercase:
    I. b
    I. c
 
-
 ---++ Definition Lists
 
 These are all valid:
-
    $ *term1* : def1
    $ term2: def2
       $ term21: def21
          $ term211: def211
          $ term212: def212
       $ term22: def22
+   $ def can be empty: 
 
 Can have variables:
-
-   * Set LIKE_THIS = Replaced LIKE_THIS
    $ %LIKE_THIS% : def1
    $ Or : %LIKE_THIS% too
 
 Or links:
-
    $ [[LikeThis][too]] : def1
    $ alpha : [[LikeThis][too]]
 
 Any level of indent can be used immediately:
-
          $ term1: def1
 
+Extra colons have to be handled carefully (the one with a trailing space is
+matched):
+   $ a:b:c:d: term:with: colons
+
+No match if there is no trailing space after the colon:
+   $ a:b:c:d:asasasas
+   $ a:b:c:d:
 
 ---++ Table
 
@@ -257,7 +257,6 @@ A backslash can be used to split a table row over two lines. This is a valid tab
 E |
 |^| b | c | d | e |
 
-
 ---++ Wiki Words
 
 WikiWords should be highlighted as links (usually underlined and italics).
@@ -278,7 +277,6 @@ escapes it. For examples these are not rendered as auto-linked:
 %WikiWord
 %RED%WikiWord%ENDCOLOR%
 
-
 ---+++ Anchors
 
 #WikiWordAnchor
@@ -289,13 +287,11 @@ escapes it. For examples these are not rendered as auto-linked:
 
 #nor this
 
-
 ---+++ Forced Links
 
 Forced links look like this: [[A link to somwehere]] or this [[wiki#syntax]] or even this [[Main.TWiki groups]].
 
 Can be escaped: ![[wiki syntax]] (note that <nop> can't be used here: <nop>[[wiki syntax]])
-
 
 ---+++ Specific Links
 
@@ -306,7 +302,6 @@ Can be escaped: ![[wiki syntax]] (note that <nop> can't be used here: <nop>[[wik
 [[http://gnu.org][GNU]]
 
 Can be escaped: ![[#Anchor][blah]] (note that <nop> can't be used here: <nop>[[#Anchor][blah]])
-
 
 ---+++ External Links
 
@@ -405,7 +400,6 @@ The format needs to be exact. The following do NOT work:
 Local is a special way to set variables:
 
    * Local BLAH = 10
-
 
 ---++ HTML
 
