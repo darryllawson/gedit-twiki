@@ -24,7 +24,7 @@ or to trim how the heading appears in the TOC:
 
 Use bold to test the basic formatted text matching:
 
-   * *YES WikiWord in format text* NO*
+   * *YES WikiWord in format text* this bit here is not matched*
    * *YES whole thing with two trailing stars**
    * *YES whole thing=*
    * *YES whole thing***
@@ -114,35 +114,40 @@ Weirdness
 
 <verbatim>
 This is verbatim
-  <b>abc</b> (HTML tags ignored)
-  %VAR% (variables not expanded)
-  SomeLink [[SomeLink][foo]] (links are ignored)
+  <b>abc</b>                  HTML tags are ignored
+  %VAR%                       Variables not expanded
+  SomeLink [[SomeLink][foo]]  Links are ignored
+  <verbatim>                  Another verbatim tag is ignored
 </verbatim>
 
 <pre>
 This is pre
-  <b>abc</b> (HTML tags NOT ignored)
-  %VAR% (variables are expanded)
-  SomeLink [[SomeLink][foo]] (links are ignored)
+  <b>abc</b>                  HTML tags are NOT ignored
+  %VAR%                       Variables are expanded
+  SomeLink [[SomeLink][foo]]  Links are ignored
 </pre>
 
 <literal>
-This is like pre, it would just be rendered differently, but no difference
-here.
-  <b>abc</b> (HTML tags NOT ignored)
-  %VAR% (variables are expanded)
-  SomeLink [[SomeLink][foo]] (links are ignored)
+This should behave exactly like <pre>.
+  <b>abc</b>
+  %VAR%
+  SomeLink [[SomeLink][foo]]
 </literal>
+
+The tags can have attributes:
+   * <verbatim canhave="attributes" abc="xyz">*abc*</verbatim>
+   * <pre canhave="attributes">*abc*</pre>
+   * <literal canhave="attributes">*abc*</literal>
 
 ---++ Separator (Horizontal Rule)
 
-These are all valid:
+The following are all valid:
 
 ---
 ----
 ----------------------
 
-These are not:
+The following are NOT valid:
 
  ---
 --
@@ -155,17 +160,17 @@ These are not:
 Bulleted list:
    * alpha
       * beta
-         * charlie
+         * gamma
    * alpha
 
-Can have formatting, variables and links:
+Can have formatting, variables and links with a bullet item:
    * *Hello* and =bye=
-   * See %SOME% variables.
-   * See some WikiWords, and [[forced link]] [[alpha][beta]]
+   * See %SOME% variables
+   * See some WikiWords, a [[forced link]] and a normal link: [[alpha][beta]]
 
 Numbered lists:
-   1. Numbered list.
-      1. Numbered list.
+   1. Numbered list
+      1. Numbered list
          a. asas
 
 Can have formatting, variables and links:
@@ -177,10 +182,10 @@ Can have a trailing dot:
    1. a
    1. b
    1.... subsequent dots are considered text
-or not:
+Or not:
    1 a
    1 b
-don't have to use 1, any integer:
+Don't have to use 1, any integer will work:
    2 a
    321 b
    192012. c
@@ -191,7 +196,7 @@ Can use lowercase a char, must have . here:
 Can use uppercase A char, must have . here:
    A. a
    A. b
-Non a characters do NOT work:
+Non-a characters do NOT work:
    a. a
    b. b
    A. a
@@ -202,7 +207,7 @@ Can use roman numerals (on a single i.):
    i. b
    i. c
 
-or uppercase:
+Or uppercase:
    I. a
    I. b
    I. c
@@ -218,19 +223,19 @@ These are all valid:
       $ term22: def22
    $ def can be empty: 
 
-Can have variables:
+Can have variables in place of the term:
    $ %LIKE_THIS% : def1
    $ Or : %LIKE_THIS% too
 
-Or links:
+Or links even:
    $ [[LikeThis][too]] : def1
    $ alpha : [[LikeThis][too]]
 
 Any level of indent can be used immediately:
          $ term1: def1
 
-Extra colons have to be handled carefully (the one with a trailing space is
-matched):
+Extra colons have to be handled carefully (it is the one with a trailing space
+that is matched):
    $ a:b:c:d: term:with: colons
 
 No match if there is no trailing space after the colon:
@@ -418,7 +423,7 @@ Comments are HTML/XML style, and therefore are handled by the
 html language spec.
 -->
 
----++ Skin templates
+---++ Skin Templates
 
 %TMPL:INCLUDE{view}%%{
 template comments
@@ -434,7 +439,7 @@ template comments
 
 TMPL markup can be multi-line in odd ways
 
----++ Topic metadata
+---++ Topic Metadata
 
 %META:TOPICINFO{author="KennethLavrsen" date="1231081686" format="1.1" reprev="1.2" version="1.2"}%
 %META:FORM{name="ItemTemplate"}%
@@ -444,5 +449,7 @@ TMPL markup can be multi-line in odd ways
 
 Meta variables must start at the start of a line, this is not valid:
   %META:FORM{name="ItemTemplate"}%
-nor this: %META:FORM{name="ItemTemplate"}%
+
+Nor is this: %META:FORM{name="ItemTemplate"}%
+
 

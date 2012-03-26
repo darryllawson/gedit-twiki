@@ -3,7 +3,7 @@
 
  GtkSourceView language definition for TML (Topic Markup Language)
  used by TWiki and Foswiki
- Copyright (C) 2011 Darryl Lawson <darryl.lawson@me.com>
+ Copyright (C) 2011, 2012 Darryl Lawson <darryl.lawson@me.com>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -53,12 +53,11 @@
 
         <!-- Headings
 
-         Three or more dashes at the beginning of a line, followed by plus
-         signs and the heading text.
-
-         "!!" can be used to exclude the heading from the TOC, when placed
-         immediately after '+', or trim the name displayed in the TOC, when
-         placed elsewhere within the heading.
+         - Three or more dashes at the beginning of a line, followed by plus
+           signs and the heading text.
+         - !! can be used to exclude the heading from the TOC, when placed
+           immediately after +, or trim the name displayed in the TOC, when
+           placed elsewhere within the heading.
         -->
         <context id="heading" style-ref="heading">
             <start>^---+\++</start>
@@ -73,7 +72,7 @@
 
         <!-- Formatted text
 
-         - Use look ahead assertion to make sure the match doesn't span more
+         - Use a look ahead assertion to make sure the match doesn't span more
            than a single line.
          - Back references are not supported, so we can't write a single
            context to match all styles.
@@ -84,7 +83,7 @@
 
         <context id="inside-formatted-text">
             <include>
-                <context ref="links"/>
+                <context ref="all-links"/>
                 <context ref="variable"/>
             </include>
         </context>
@@ -128,17 +127,25 @@
 
         <!-- <verbatim>
 
-         Can not contain TML or HTML.
-
-         Limitation: The <verbatim> and </verbatim> tags cannot be split across
-         multiple lines.
+         - Can not contain TML or HTML.
+         - Space within <verbatim (for the start tag), or <\verbatim (for
+           the end tag) is not permitted.
+         - Look ahead assertions are used to match the <start> and <end> tags
+           so we can use html:generic-tag to match tag attributes.
         -->
         <context id="verbatim">
-            <start>&lt;(verbatim)\s*&gt;</start>
-            <end>&lt;/\%{1@start}\s*&gt;</end>
+            <start>(?=&lt;verbatim\b)</start>
+            <end>(?=&lt;/verbatim\b)</end>
             <include>
-                <context sub-pattern="0" where="start" style-ref="element"/>
-                <context sub-pattern="0" where="end" style-ref="element"/>
+                <context id="verbatim-start-tag" once-only="true">
+                    <start>&lt;verbatim\b</start>
+                    <end>&gt;</end>
+                    <include>
+                        <context sub-pattern="0" where="start" style-ref="element"/>
+                        <context sub-pattern="0" where="end" style-ref="element"/>
+                        <context ref="html:generic-tag"/>
+                    </include>
+                </context>
                 <context id="verbatim-body" style-ref="formatted-text" extend-parent="false">
                     <match>.*</match>
                 </context>
@@ -147,52 +154,51 @@
 
         <!-- <pre>
 
-         Similar to <verbatim>, except variable dereference and HTML is
-         allowed. No style is applied, as that would over-ride the HTML
-         tag and variable styles for the contents.
-
-         Limitation: same as for <verbatim> above.
+         - Similar to <verbatim>, except variable dereference and HTML is
+           allowed.
+         - No style is applied, as that would over-ride the HTML tag and
+           variable styles for the contents.
         -->
         <context id="pre">
-            <start>&lt;pre\s*&gt;</start>
+            <start>(?=&lt;pre\b)</start>
             <include>
-                <context sub-pattern="0" where="start" style-ref="element"/>
-                <context ref="variable"/>
-                <!-- end-parent="true" is used rather than <end>, to stop the
-                 html:html context matching </pre>.
-                 -->
+                <!-- end-parent="true" below is used rather than <end>, to stop
+                 the html:html context matching </pre>. -->
                 <context end-parent="true" style-ref="element">
-                    <match>&lt;/pre\s*&gt;</match>
+                    <match>(?=&lt;/pre\b)</match>
                 </context>
+                <context ref="variable"/>
                 <context ref="html:html"/>
             </include>
         </context>
 
         <!-- <literal>
 
-         Same as <pre>, but is rendered differently (<pre> is rendered as
-         monospace and preserves newlines).
-
-         Limitation: same as for <verbatim> above.
+         - Same as <pre>, but is rendered differently (<pre> is rendered as
+           monospace and preserves newlines).
          -->
         <context id="literal">
-            <start>&lt;literal\s*&gt;</start>
+            <start>(?=&lt;literal\b)</start>
             <include>
-                <context sub-pattern="0" where="start" style-ref="element"/>
-                <context ref="variable"/>
                 <context end-parent="true" style-ref="element">
-                    <match>&lt;/literal\s*&gt;</match>
+                    <match>(?=&lt;/literal\b)</match>
                 </context>
+                <context ref="variable"/>
                 <context ref="html:html"/>
             </include>
         </context>
 
-        <!-- XML elements which have special meaning in TML. -->
-        <context id="xml-elements">
+        <!-- <noautolink>
+
+         - Only WikiWords are not linked. All other links and TML is valid.
+         -->
+        <context id="noautolink">
+            <start>(?=&lt;noautolink\b)</start>
             <include>
-                <context ref="verbatim"/>
-                <context ref="pre"/>
-                <context ref="literal"/>
+                <context end-parent="true" style-ref="element">
+                    <match>(?=&lt;/noautolink\b)</match>
+                </context>
+                <context ref="tml-noautolink"/>
             </include>
         </context>
 
@@ -240,10 +246,9 @@
 
         <!-- Table Row
 
-         Highlight a table row if the line starts with a pipe (|) and finishes
-         with a pipe or a backslash (line continuation).
-
-         Whitespace before and after the pipe character is ignored.
+         - Highlight a table row if the line starts with a pipe (|) and
+           finishes with a pipe or a backslash (line continuation).
+         - Whitespace before and after the pipe character is ignored.
          -->
         <context id="table-row">
             <start>^\s*(\|)(?=.*(\|\s*|\\)$)</start>
@@ -319,7 +324,7 @@
 
         <!-- Topic meta data.
 
-         - META TOPICINFO, FORM, FIELD, PREFERNCE and custom.
+         - META TOPICINFO, FORM, FIELD, PREFERENCE and custom.
          - Similar to a variable but with some restrictions:
            - Must appear at the very start of the line.
            - Can't be nested.
@@ -411,7 +416,7 @@
 
          Weirdness/limitation: A wiki word will be escaped if preceded by a
          punctuation character, unless that character is part of valid markup.
-         This is too hard to detect, and non-common, so we don't detect this.
+         This is too hard to detect, and not common, so we don't detect this.
          (but we do allow these characters to escape, as they are not part
           of the markup: %)
         -->
@@ -428,7 +433,7 @@
 
         <!-- Forced link: [[ link ]], and specific link: [[ link ][ text ]].
 
-         ! prefix is used to escape (<nop> does not work here though).
+         - A ! prefix is used to escape (<nop> does not work here though).
         -->
 
         <define-regex id="not-escaped-link">(?&lt;!!)</define-regex>
@@ -475,14 +480,13 @@
             <include>
                 <context ref="formatted-text"/>
                 <context ref="variable"/>
-                <context ref="links"/>
+                <context ref="all-links"/>
             </include>
         </context>
 
-        <!-- All types of links -->
-        <context id="links">
+        <!-- All types of links, except wiki words.-->
+        <context id="links-noautolink">
             <include>
-                <context ref="wiki-link"/>
                 <context ref="forced-link"/>
                 <context ref="specific-link"/>
                 <context ref="def:email-address"/>
@@ -490,11 +494,20 @@
             </include>
         </context>
 
-        <!-- Top level -->
-        <context id="tml">
+        <!-- All types of links -->
+        <context id="all-links">
             <include>
-                <!-- xml-elements must appear before html:html -->
-                <context ref="xml-elements"/>
+                <context ref="wiki-link"/>
+                <context ref="links-noautolink"/>
+            </include>
+        </context>
+
+        <context id="tml-noautolink">
+            <include>
+                <!-- Note that order is important here. -->
+                <context ref="verbatim"/>
+                <context ref="pre"/>
+                <context ref="literal"/>
                 <context ref="variable"/>
                 <context ref="meta"/>
                 <context ref="template"/>
@@ -506,8 +519,18 @@
                 <context ref="list"/>
                 <context ref="definition-list"/>
                 <context ref="table-row"/>
-                <context ref="links"/>
+                <context ref="links-noautolink"/>
                 <context ref="html:html"/>
+            </include>
+        </context>
+        
+        <!-- Top level context -->
+        <context id="tml">
+            <include>
+                <!-- Note that order is important here. -->
+                <context ref="noautolink"/>
+                <context ref="tml-noautolink"/>
+                <context ref="wiki-link"/>
             </include>
         </context>
 
