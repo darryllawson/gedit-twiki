@@ -83,7 +83,7 @@
 
         <context id="inside-formatted-text">
             <include>
-                <context ref="all-links"/>
+                <context ref="links"/>
                 <context ref="variable"/>
             </include>
         </context>
@@ -188,20 +188,6 @@
             </include>
         </context>
 
-        <!-- <noautolink>
-
-         - Only WikiWords are not linked. All other links and TML is valid.
-         -->
-        <context id="noautolink">
-            <start>(?=&lt;noautolink\b)</start>
-            <include>
-                <context end-parent="true" style-ref="element">
-                    <match>(?=&lt;/noautolink\b)</match>
-                </context>
-                <context ref="tml-noautolink"/>
-            </include>
-        </context>
-
         <!-- Separator (horizontal rule)
 
          Non-dash characters (including white space) are not permitted after
@@ -243,7 +229,7 @@
                 <context ref="embedded"/>
             </include>
         </context>
-
+        
         <!-- Table Row
 
          - Highlight a table row if the line starts with a pipe (|) and
@@ -480,29 +466,23 @@
             <include>
                 <context ref="formatted-text"/>
                 <context ref="variable"/>
-                <context ref="all-links"/>
+                <context ref="links"/>
             </include>
         </context>
 
-        <!-- All types of links, except wiki words.-->
-        <context id="links-noautolink">
+        <!-- All types of links -->
+        <context id="links">
             <include>
+                <context ref="wiki-link"/>
                 <context ref="forced-link"/>
                 <context ref="specific-link"/>
                 <context ref="def:email-address"/>
                 <context ref="def:net-address"/>
             </include>
         </context>
-
-        <!-- All types of links -->
-        <context id="all-links">
-            <include>
-                <context ref="wiki-link"/>
-                <context ref="links-noautolink"/>
-            </include>
-        </context>
-
-        <context id="tml-noautolink">
+        
+        <!-- Top level context -->
+        <context id="tml">
             <include>
                 <!-- Note that order is important here. -->
                 <context ref="verbatim"/>
@@ -519,18 +499,8 @@
                 <context ref="list"/>
                 <context ref="definition-list"/>
                 <context ref="table-row"/>
-                <context ref="links-noautolink"/>
+                <context ref="links"/>
                 <context ref="html:html"/>
-            </include>
-        </context>
-        
-        <!-- Top level context -->
-        <context id="tml">
-            <include>
-                <!-- Note that order is important here. -->
-                <context ref="noautolink"/>
-                <context ref="tml-noautolink"/>
-                <context ref="wiki-link"/>
             </include>
         </context>
 

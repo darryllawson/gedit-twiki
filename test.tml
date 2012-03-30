@@ -120,6 +120,14 @@ This is verbatim
   <verbatim>                  Another verbatim tag is ignored
 </verbatim>
 
+
+<verbatim>
+Nested verbatim tags are not properly handled:
+<verbatim>
+</verbatim>
+This should really still be verbatim, but it isn't          
+</verbatim>
+
 <pre>
 This is pre
   <b>abc</b>                  HTML tags are NOT ignored
